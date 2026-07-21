@@ -1,0 +1,9 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Green Darma Pharmaceuticals Custom Styles */
+:root {
+    --gdp-primary: #1b4d3e;
+    --gdp-secondary: #2c8562;
+    --gdp-accent: #e8f5e9;
+}
+

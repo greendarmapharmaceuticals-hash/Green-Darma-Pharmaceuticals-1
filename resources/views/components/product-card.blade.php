@@ -3,7 +3,7 @@
 <div class="card-product">
     <div class="card-product-img-wrapper">
         @if($product->featured_image && file_exists(public_path($product->featured_image)))
-            <img src="{{ asset($product->featured_image) }}" alt="{{ $product->image_alt ?? $product->name }}" class="card-product-img">
+            <img src="{{ asset($product->featured_image) }}" alt="{{ $product->image_alt ?? $product->name }}" class="card-product-img" loading="lazy">
         @else
             <div class="bg-success-subtle text-success py-4 px-3 rounded-circle text-center fw-bold fs-2">
                 <i class="bi bi-prescription2"></i>

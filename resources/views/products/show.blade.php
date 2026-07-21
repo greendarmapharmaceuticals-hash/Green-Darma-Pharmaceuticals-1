@@ -57,7 +57,7 @@
                 <div class="col-12 col-md-5">
                     <div class="card p-3 border-0 bg-light text-center rounded-4 mb-3">
                         @if($product->featured_image && file_exists(public_path($product->featured_image)))
-                            <img id="mainProductImg" src="{{ asset($product->featured_image) }}" alt="{{ $product->image_alt ?? $product->name }}" class="img-fluid object-fit-contain" style="max-height: 360px;">
+                            <img id="mainProductImg" src="{{ asset($product->featured_image) }}" alt="{{ $product->image_alt ?? $product->name }}" class="img-fluid object-fit-contain" style="max-height: 360px;" loading="lazy">
                         @else
                             <div class="py-5 text-success">
                                 <i class="bi bi-prescription2 display-1 d-block mb-2"></i>
@@ -69,10 +69,10 @@
                     @if($product->images->count() > 0)
                         <div class="d-flex gap-2 justify-content-center flex-wrap">
                             @if($product->featured_image)
-                                <img src="{{ asset($product->featured_image) }}" class="img-thumbnail cursor-pointer gallery-thumb border-success" style="width: 65px; height: 65px; object-fit: cover;" onclick="changeMainImage(this.src)">
+                                <img src="{{ asset($product->featured_image) }}" class="img-thumbnail cursor-pointer gallery-thumb border-success" style="width: 65px; height: 65px; object-fit: cover;" onclick="changeMainImage(this.src)" loading="lazy">
                             @endif
                             @foreach($product->images as $gImg)
-                                <img src="{{ asset($gImg->image) }}" class="img-thumbnail cursor-pointer gallery-thumb" style="width: 65px; height: 65px; object-fit: cover;" onclick="changeMainImage(this.src)">
+                                <img src="{{ asset($gImg->image) }}" class="img-thumbnail cursor-pointer gallery-thumb" style="width: 65px; height: 65px; object-fit: cover;" onclick="changeMainImage(this.src)" loading="lazy">
                             @endforeach
                         </div>
                     @endif

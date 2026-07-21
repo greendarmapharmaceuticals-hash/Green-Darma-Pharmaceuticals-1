@@ -22,6 +22,16 @@
     <meta property="og:url" content="{{ request()->url() }}">
     <meta property="og:image" content="@yield('og_image', asset($seoSetting?->og_image ?? 'favicon.ico'))">
 
+    <!-- Organization JSON-LD Schema -->
+    @php
+        $seoService = new \App\Services\SeoService();
+        $orgSchema = $seoService->generateOrganizationSchema();
+    @endphp
+    <script type="application/ld+json">
+        {!! json_encode($orgSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+    </script>
+    @stack('schema')
+
     <!-- Fonts & Bootstrap 5 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

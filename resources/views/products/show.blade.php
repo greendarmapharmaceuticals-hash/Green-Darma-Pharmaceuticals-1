@@ -6,6 +6,30 @@
 @section('canonical_url', route('products.show', $product->slug))
 @section('og_image', ($product->featured_image && file_exists(public_path($product->featured_image))) ? asset($product->featured_image) : asset('favicon.ico'))
 
+@push('schema')
+    @php
+        $seoService = new \App\Services\SeoService();
+        $prodSchema = $seoService->generateProductSchema($product);
+        $faqSchema = $seoService->generateFaqSchema($product);
+        $breadcrumbSchema = $seoService->generateBreadcrumbSchema([
+            ['name' => 'Home', 'url' => url('/')],
+            ['name' => 'Products', 'url' => route('products.index')],
+            ['name' => $product->name, 'url' => route('products.show', $product->slug)],
+        ]);
+    @endphp
+    <script type="application/ld+json">
+        {!! json_encode($prodSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+    </script>
+    @if($faqSchema)
+        <script type="application/ld+json">
+            {!! json_encode($faqSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+        </script>
+    @endif
+    <script type="application/ld+json">
+        {!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+    </script>
+@endpush
+
 @section('content')
 
 <!-- BREADCRUMB & HEADER -->

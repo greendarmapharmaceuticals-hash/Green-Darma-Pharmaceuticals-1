@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\CompanyController as AdminCompanyController;
@@ -9,14 +10,39 @@ use App\Http\Controllers\Admin\MessageController as AdminMessageController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\SeoController as AdminSeoController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LegalController;
+use App\Http\Controllers\ProductController;
 use App\Http\Middleware\AdminAuthenticate;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/*
+|--------------------------------------------------------------------------
+| Public Web Routes
+|--------------------------------------------------------------------------
+*/
 
-// Admin Routes Group
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/search-api', [ProductController::class, 'liveSearch'])->name('products.search.api');
+Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
+
+Route::get('/privacy', [LegalController::class, 'privacy'])->name('privacy');
+Route::get('/terms', [LegalController::class, 'terms'])->name('terms');
+
+/*
+|--------------------------------------------------------------------------
+| Admin Portal Routes
+|--------------------------------------------------------------------------
+*/
+
 Route::prefix('admin')->name('admin.')->group(function () {
     // Auth Guest Routes
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

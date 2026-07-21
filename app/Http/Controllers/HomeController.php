@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Category;
+use App\Models\CompanySetting;
+use App\Models\Product;
+use Illuminate\View\View;
+
+class HomeController extends Controller
+{
+    public function index(): View
+    {
+        $company = CompanySetting::first();
+        
+        $featuredProducts = Product::with('category')
+            ->where('status', 'published')
+            ->where('is_featured', true)
+            ->latest()
+            ->take(6)
+            ->get();
+
+        if ($featuredProducts->isEmpty()) {
+            $featuredProducts = Product::with('category')
+                ->where('status', 'published')
+                ->latest()
+                ->take(6)
+                ->get();
+        }
+
+        $categories = Category::withCount(['products' => function ($q) {
+            $q->where('status', 'published');
+        }])->where('status', 'active')->get();
+
+        $latestProducts = Product::with('category')
+            ->where('status', 'published')
+            ->latest()
+            ->take(8)
+            ->get();
+
+        return view('home', compact('company', 'featuredProducts', 'categories', 'latestProducts'));
+    }
+}

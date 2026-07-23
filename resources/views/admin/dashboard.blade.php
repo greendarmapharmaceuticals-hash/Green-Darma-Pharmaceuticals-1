@@ -69,19 +69,19 @@
 </div>
 
 <!-- Quick Actions Banner for Beginners -->
-<div class="card card-custom p-4 mb-4 bg-white">
+<div class="card card-custom p-3 p-md-4 mb-4 bg-white">
     <h5 class="fw-bold mb-3"><i class="bi bi-lightning-charge text-warning me-2"></i> Quick Action Center</h5>
-    <div class="d-flex flex-wrap gap-3">
-        <a href="{{ route('admin.products.create') }}" class="btn btn-gdp btn-lg-custom">
+    <div class="d-flex flex-wrap gap-2 gap-md-3">
+        <a href="{{ route('admin.products.create') }}" class="btn btn-gdp btn-lg-custom w-100 w-sm-auto text-center flex-grow-1 flex-md-grow-0">
             <i class="bi bi-plus-circle me-2"></i> Add New Product
         </a>
-        <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-success btn-lg-custom">
+        <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-success btn-lg-custom w-100 w-sm-auto text-center flex-grow-1 flex-md-grow-0">
             <i class="bi bi-folder-plus me-2"></i> Manage Categories
         </a>
-        <a href="{{ route('admin.media.index') }}" class="btn btn-outline-primary btn-lg-custom">
+        <a href="{{ route('admin.media.index') }}" class="btn btn-outline-primary btn-lg-custom w-100 w-sm-auto text-center flex-grow-1 flex-md-grow-0">
             <i class="bi bi-cloud-upload me-2"></i> Upload Media
         </a>
-        <a href="{{ route('admin.messages.index') }}" class="btn btn-outline-dark btn-lg-custom">
+        <a href="{{ route('admin.messages.index') }}" class="btn btn-outline-dark btn-lg-custom w-100 w-sm-auto text-center flex-grow-1 flex-md-grow-0">
             <i class="bi bi-envelope me-2"></i> View Messages
         </a>
     </div>

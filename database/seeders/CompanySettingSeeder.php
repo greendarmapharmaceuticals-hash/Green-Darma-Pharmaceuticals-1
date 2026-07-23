@@ -13,6 +13,8 @@ class CompanySettingSeeder extends Seeder
             ['id' => 1],
             [
                 'company_name' => 'Green Darma Pharmaceuticals',
+                'logo' => 'images/logo.png',
+                'favicon' => 'images/logo.png',
                 'about' => 'Green Darma Pharmaceuticals is a leading healthcare company dedicated to producing high-quality, clinical-grade pharmaceutical preparations and healthcare solutions in Bangladesh.',
                 'address' => 'Corporate Head Office, Dhaka, Bangladesh',
                 'phone' => '+880 1700-000000',

@@ -15,6 +15,11 @@
     <meta name="keywords" content="@yield('meta_keywords', $seoSetting?->keywords ?? 'Green Darma, Pharmaceuticals Bangladesh, Medicated Soap, Permethrin, Luliconazole, Probiotic')">
     <link rel="canonical" href="@yield('canonical_url', request()->url())">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon.png') }}?v=2">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}?v=2">
+
     <!-- OpenGraph & Social Cards -->
     <meta property="og:title" content="@yield('title', $seoSetting?->meta_title ?? 'Green Darma Pharmaceuticals')">
     <meta property="og:description" content="@yield('meta_description', $seoSetting?->meta_description ?? 'Healthcare & Pharmaceutical Platform')">
@@ -221,7 +226,11 @@
         <nav class="navbar navbar-expand-lg navbar-main py-2">
             <div class="container">
                 <a class="navbar-brand-logo d-flex align-items-center me-4" href="{{ url('/') }}">
-                    <i class="bi bi-capsule-capsule fs-2 text-success me-2"></i>
+                    @if($companySetting?->logo)
+                        <img src="{{ asset($companySetting->logo) }}" alt="Green Darma Pharmaceuticals Logo" class="me-2" style="max-height: 44px; width: auto; object-fit: contain;">
+                    @else
+                        <i class="bi bi-capsule-capsule fs-2 text-success me-2"></i>
+                    @endif
                     <span>Green Darma</span>
                 </a>
 
@@ -246,19 +255,6 @@
                         </li>
                     </ul>
 
-                    <!-- Live Autocomplete Search Bar -->
-                    <div class="position-relative me-3" style="min-width: 280px;">
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
-                            <input type="text" id="liveSearchInput" class="form-control bg-light border-start-0 ps-0 fs-7" placeholder="Search product or generic..." autocomplete="off">
-                        </div>
-                        <div id="liveSearchResults" class="search-results-dropdown"></div>
-                    </div>
-
-                    <!-- Admin Portal Link -->
-                    <a href="{{ route('admin.login') }}" class="btn btn-outline-success btn-sm fw-bold rounded-pill px-3">
-                        <i class="bi bi-person-lock me-1"></i> Admin Login
-                    </a>
                 </div>
             </div>
         </nav>
@@ -276,7 +272,11 @@
                 <!-- Col 1: Brand Info -->
                 <div class="col-12 col-md-4">
                     <div class="navbar-brand-logo text-white d-flex align-items-center mb-3">
-                        <i class="bi bi-capsule-capsule fs-2 text-success me-2"></i>
+                        @if($companySetting?->logo)
+                            <img src="{{ asset($companySetting->logo) }}" alt="Green Darma Pharmaceuticals Logo" class="me-2" style="max-height: 44px; width: auto; object-fit: contain;">
+                        @else
+                            <i class="bi bi-capsule-capsule fs-2 text-success me-2"></i>
+                        @endif
                         <span>Green Darma</span>
                     </div>
                     <p class="fs-7 text-slate-400 mb-3">
@@ -299,6 +299,7 @@
                         <li class="mb-2"><a href="{{ route('contact') }}">Contact Us</a></li>
                         <li class="mb-2"><a href="{{ route('privacy') }}">Privacy Policy</a></li>
                         <li class="mb-2"><a href="{{ route('terms') }}">Terms of Use</a></li>
+                        <li class="mb-2"><a href="{{ route('admin.login') }}">Admin Login</a></li>
                     </ul>
                 </div>
 
@@ -331,61 +332,7 @@
     <!-- Bootstrap 5 Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Live Autocomplete Search JS Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const searchInput = document.getElementById('liveSearchInput');
-            const searchResults = document.getElementById('liveSearchResults');
 
-            if (searchInput && searchResults) {
-                let debounceTimer;
-
-                searchInput.addEventListener('input', function () {
-                    clearTimeout(debounceTimer);
-                    const query = this.value.trim();
-
-                    if (query.length < 2) {
-                        searchResults.style.display = 'none';
-                        searchResults.innerHTML = '';
-                        return;
-                    }
-
-                    debounceTimer = setTimeout(() => {
-                        fetch(`{{ route('products.search.api') }}?q=${encodeURIComponent(query)}`)
-                            .then(res => res.json())
-                            .then(data => {
-                                if (data.length === 0) {
-                                    searchResults.innerHTML = `<div class="p-3 text-muted fs-7 text-center">No products found matching "${query}"</div>`;
-                                } else {
-                                    let html = '';
-                                    data.forEach(item => {
-                                        html += `
-                                            <a href="${item.url}" class="search-result-item">
-                                                <div class="me-3">
-                                                    ${item.image ? `<img src="${item.image}" class="rounded" style="width: 40px; height: 40px; object-fit: cover;">` : `<div class="bg-success-subtle text-success fw-bold rounded d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">Rx</div>`}
-                                                </div>
-                                                <div>
-                                                    <div class="fw-bold fs-7 lh-1">${item.name}</div>
-                                                    <small class="text-muted fs-8">${item.generic_name} (${item.strength || ''})</small>
-                                                </div>
-                                            </a>
-                                        `;
-                                    });
-                                    searchResults.innerHTML = html;
-                                }
-                                searchResults.style.display = 'block';
-                            });
-                    }, 250);
-                });
-
-                document.addEventListener('click', function (e) {
-                    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-                        searchResults.style.display = 'none';
-                    }
-                });
-            }
-        });
-    </script>
 
     @stack('scripts')
 </body>

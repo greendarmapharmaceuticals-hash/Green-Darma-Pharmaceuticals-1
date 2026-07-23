@@ -14,7 +14,9 @@ class SitemapController extends Controller
         $content = view('seo.sitemap', compact('products'))->render();
 
         return response($content, 200)
-            ->header('Content-Type', 'text/xml');
+            ->header('Content-Type', 'text/xml')
+            ->header('Cache-Control', 'public, max-age=3600, s-maxage=86400')
+            ->header('X-Robots-Tag', 'noindex');
     }
 
     public function robots(): Response
@@ -26,6 +28,7 @@ class SitemapController extends Controller
         $content .= "Sitemap: " . url('/sitemap.xml') . "\n";
 
         return response($content, 200)
-            ->header('Content-Type', 'text/plain');
+            ->header('Content-Type', 'text/plain')
+            ->header('Cache-Control', 'public, max-age=86400');
     }
 }

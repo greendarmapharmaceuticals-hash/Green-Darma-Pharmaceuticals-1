@@ -12,10 +12,10 @@ class ProductController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Product::with('category')->where('status', 'published');
+        $query = Product::where('status', 'published');
 
         if ($request->filled('search')) {
-            $search = $request->input('search');
+            $search = trim($request->input('search'));
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('generic_name', 'like', "%{$search}%")
@@ -50,7 +50,7 @@ class ProductController extends Controller
             $query->latest();
         }
 
-        $products = $query->paginate(9)->withQueryString();
+        $products = $query->paginate(12)->withQueryString();
         $categories = Category::withCount(['products' => function ($q) {
             $q->where('status', 'published');
         }])->where('status', 'active')->get();
@@ -64,34 +64,23 @@ class ProductController extends Controller
 
     public function show(string $slug): View
     {
-        $product = Product::with(['category', 'images', 'faqs'])
+        $product = Product::with(['images', 'faqs'])
             ->where('slug', $slug)
             ->where('status', 'published')
             ->firstOrFail();
 
-        $relatedProducts = Product::with('category')
-            ->where('status', 'published')
+        $relatedProducts = Product::where('status', 'published')
             ->where('id', '!=', $product->id)
-            ->where('category_id', $product->category_id)
+            ->latest()
             ->take(4)
             ->get();
-
-        if ($relatedProducts->count() < 4) {
-            $extra = Product::with('category')
-                ->where('status', 'published')
-                ->where('id', '!=', $product->id)
-                ->whereNotIn('id', $relatedProducts->pluck('id'))
-                ->take(4 - $relatedProducts->count())
-                ->get();
-            $relatedProducts = $relatedProducts->merge($extra);
-        }
 
         return view('products.show', compact('product', 'relatedProducts'));
     }
 
     public function liveSearch(Request $request): JsonResponse
     {
-        $query = $request->input('q', '');
+        $query = trim($request->input('q', ''));
 
         if (strlen($query) < 2) {
             return response()->json([]);

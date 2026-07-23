@@ -15,6 +15,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\AdminAuthenticate;
 use Illuminate\Support\Facades\Route;
 
@@ -23,8 +24,6 @@ use Illuminate\Support\Facades\Route;
 | Public Web Routes
 |--------------------------------------------------------------------------
 */
-
-use App\Http\Controllers\SitemapController;
 
 Route::get('/sitemap.xml', [SitemapController::class, 'sitemap'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');

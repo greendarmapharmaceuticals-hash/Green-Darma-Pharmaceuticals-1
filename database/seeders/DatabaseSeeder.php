@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             CategorySeeder::class,
             CompanySettingSeeder::class,
-            ProductSeeder::class,
+            // ProductSeeder::class,
+            // DossierProductSeeder::class,
         ]);
     }
 }

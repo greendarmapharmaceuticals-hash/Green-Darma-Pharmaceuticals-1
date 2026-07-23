@@ -39,9 +39,14 @@
 
     <div class="card login-card p-4 bg-white">
         <div class="text-center mb-4">
-            <div class="bg-success-subtle text-success d-inline-flex p-3 rounded-circle mb-3">
-                <i class="bi bi-capsule-capsule fs-1"></i>
-            </div>
+            @php $companySetting = \App\Models\CompanySetting::first(); @endphp
+            @if($companySetting?->logo)
+                <img src="{{ asset($companySetting->logo) }}" alt="Logo" class="mb-3" style="max-height: 80px; width: auto; object-fit: contain;">
+            @else
+                <div class="bg-success-subtle text-success d-inline-flex p-3 rounded-circle mb-3">
+                    <i class="bi bi-capsule-capsule fs-1"></i>
+                </div>
+            @endif
             <h3 class="fw-bold text-dark mb-1">Green Darma Admin</h3>
             <p class="text-muted fs-7">Enter your credentials to access the management portal</p>
         </div>

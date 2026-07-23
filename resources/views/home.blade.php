@@ -46,8 +46,13 @@
 
             <div class="col-12 col-lg-5 text-center">
                 <div class="position-relative d-inline-block">
-                    <div class="bg-success-subtle p-5 rounded-circle d-inline-block">
-                        <i class="bi bi-heart-pulse display-1 text-success"></i>
+                    <div class="bg-success-subtle p-4 p-md-5 rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 220px; height: 220px;">
+                        @php $companySetting = \App\Models\CompanySetting::first(); @endphp
+                        @if($companySetting?->logo)
+                            <img src="{{ asset($companySetting->logo) }}" alt="Green Darma Logo" class="img-fluid" style="max-height: 140px; width: auto; object-fit: contain;">
+                        @else
+                            <i class="bi bi-capsule-capsule display-1 text-success"></i>
+                        @endif
                     </div>
                 </div>
             </div>

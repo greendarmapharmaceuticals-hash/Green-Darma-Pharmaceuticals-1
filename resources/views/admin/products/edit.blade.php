@@ -87,14 +87,22 @@
                     <h5 class="fw-bold mb-3 text-success">Clinical & Dosage Specifications</h5>
                     <div class="row g-3">
                         <div class="col-12 col-md-4">
+                            <label for="availability_status" class="form-label fw-medium">Availability Status</label>
+                            <input type="text" class="form-control" id="availability_status" name="availability_status" value="{{ old('availability_status', $product->availability_status) }}" placeholder="e.g. PRESCRIPTION ONLY (RX)">
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label for="therapeutic_class" class="form-label fw-medium">Therapeutic Class</label>
+                            <input type="text" class="form-control" id="therapeutic_class" name="therapeutic_class" value="{{ old('therapeutic_class', $product->therapeutic_class) }}" placeholder="e.g. Topical Antibiotics / Anti-Acne">
+                        </div>
+                        <div class="col-12 col-md-4">
                             <label for="strength" class="form-label fw-medium">Strength</label>
                             <input type="text" class="form-control" id="strength" name="strength" value="{{ old('strength', $product->strength) }}">
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-md-6">
                             <label for="dosage_form" class="form-label fw-medium">Dosage Form</label>
                             <input type="text" class="form-control" id="dosage_form" name="dosage_form" value="{{ old('dosage_form', $product->dosage_form) }}">
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-md-6">
                             <label for="pack_size" class="form-label fw-medium">Pack Size</label>
                             <input type="text" class="form-control" id="pack_size" name="pack_size" value="{{ old('pack_size', $product->pack_size) }}">
                         </div>
@@ -123,12 +131,20 @@
                             <textarea class="form-control" id="pharmacology" name="pharmacology" rows="3">{{ old('pharmacology', $product->pharmacology) }}</textarea>
                         </div>
                         <div class="col-12 col-md-6">
+                            <label for="mechanism_of_action" class="form-label fw-medium">Mechanism of Action</label>
+                            <textarea class="form-control" id="mechanism_of_action" name="mechanism_of_action" rows="3">{{ old('mechanism_of_action', $product->mechanism_of_action) }}</textarea>
+                        </div>
+                        <div class="col-12 col-md-6">
                             <label for="indications" class="form-label fw-medium">Indications</label>
                             <textarea class="form-control" id="indications" name="indications" rows="3">{{ old('indications', $product->indications) }}</textarea>
                         </div>
                         <div class="col-12 col-md-6">
                             <label for="dosage" class="form-label fw-medium">Dosage & Administration</label>
                             <textarea class="form-control" id="dosage" name="dosage" rows="3">{{ old('dosage', $product->dosage) }}</textarea>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="directions_for_use" class="form-label fw-medium">Directions for Use</label>
+                            <textarea class="form-control" id="directions_for_use" name="directions_for_use" rows="3">{{ old('directions_for_use', $product->directions_for_use) }}</textarea>
                         </div>
                         <div class="col-12 col-md-6">
                             <label for="side_effects" class="form-label fw-medium">Side Effects</label>
@@ -139,8 +155,32 @@
                             <textarea class="form-control" id="contraindications" name="contraindications" rows="3">{{ old('contraindications', $product->contraindications) }}</textarea>
                         </div>
                         <div class="col-12 col-md-6">
+                            <label for="precautions" class="form-label fw-medium">Warnings & Precautions</label>
+                            <textarea class="form-control" id="precautions" name="precautions" rows="3">{{ old('precautions', $product->precautions) }}</textarea>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="pregnancy_lactation" class="form-label fw-medium">Pregnancy & Lactation</label>
+                            <textarea class="form-control" id="pregnancy_lactation" name="pregnancy_lactation" rows="3">{{ old('pregnancy_lactation', $product->pregnancy_lactation) }}</textarea>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="drug_interactions" class="form-label fw-medium">Drug Interactions</label>
+                            <textarea class="form-control" id="drug_interactions" name="drug_interactions" rows="3">{{ old('drug_interactions', $product->drug_interactions) }}</textarea>
+                        </div>
+                        <div class="col-12 col-md-6">
                             <label for="storage" class="form-label fw-medium">Storage Conditions</label>
                             <textarea class="form-control" id="storage" name="storage" rows="3">{{ old('storage', $product->storage) }}</textarea>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="overdose_information" class="form-label fw-medium">Overdose Information</label>
+                            <textarea class="form-control" id="overdose_information" name="overdose_information" rows="3">{{ old('overdose_information', $product->overdose_information) }}</textarea>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="related_products_list" class="form-label fw-medium">Related Products List</label>
+                            <textarea class="form-control" id="related_products_list" name="related_products_list" rows="3">{{ old('related_products_list', $product->related_products_list) }}</textarea>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="references_list" class="form-label fw-medium">References List</label>
+                            <textarea class="form-control" id="references_list" name="references_list" rows="3">{{ old('references_list', $product->references_list) }}</textarea>
                         </div>
                     </div>
                 </div>

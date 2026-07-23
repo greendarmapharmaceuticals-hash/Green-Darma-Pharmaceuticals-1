@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Dashboard') | Green Darma Pharmaceuticals</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon.png') }}?v=2">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}?v=2">
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,13 +43,14 @@
         .sidebar {
             width: 260px;
             background: #ffffff;
-            min-height: 100vh;
+            height: 100vh;
             border-right: 1px solid #e2e8f0;
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
+            z-index: 1050;
+            transition: transform 0.3s ease-in-out;
+            overflow-y: auto;
         }
 
         .sidebar-brand {
@@ -101,6 +107,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: margin-left 0.3s ease-in-out;
         }
 
         .top-navbar {
@@ -115,6 +122,48 @@
         .main-content {
             padding: 2rem;
             flex: 1;
+        }
+
+        .sidebar-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 1040;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-backdrop.show {
+            display: block;
+            opacity: 1;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                transform: translateX(-100%);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-wrapper {
+                margin-left: 0 !important;
+            }
+
+            .top-navbar {
+                padding: 0.75rem 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
         }
 
         /* Card & Button Aesthetics */
@@ -159,9 +208,16 @@
 
     <!-- Sidebar -->
     <aside class="sidebar">
-        <div class="sidebar-brand d-flex align-items-center">
-            <i class="bi bi-capsule-capsule text-success me-2 fs-3"></i>
-            <span>Green Darma Admin</span>
+        <div class="sidebar-brand d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                @php $companySetting = \App\Models\CompanySetting::first(); @endphp
+                @if($companySetting?->logo)
+                    <img src="{{ asset($companySetting->logo) }}" alt="Logo" class="me-2" style="max-height: 38px; width: auto; object-fit: contain;">
+                @else
+                    <i class="bi bi-capsule-capsule text-success me-2 fs-3"></i>
+                @endif
+                <span class="fs-6 fw-bold">Green Darma Admin</span>
+            </div>
         </div>
         <div class="sidebar-menu">
             <div class="menu-header">Main Menu</div>
@@ -211,19 +267,22 @@
         <!-- Top Navbar -->
         <header class="top-navbar">
             <div class="d-flex align-items-center">
-                <h4 class="mb-0 fw-bold brand-font text-dark">@yield('page-title', 'Dashboard')</h4>
+                <button class="btn btn-light d-lg-none me-2 border shadow-sm" id="sidebarToggle" type="button" aria-label="Toggle navigation">
+                    <i class="bi bi-list fs-4 text-success"></i>
+                </button>
+                <h4 class="mb-0 fw-bold brand-font text-dark fs-5 fs-md-4">@yield('page-title', 'Dashboard')</h4>
             </div>
 
-            <div class="d-flex align-items-center gap-3">
-                <a href="{{ url('/') }}" target="_blank" class="btn btn-outline-success btn-sm rounded-pill px-3">
-                    <i class="bi bi-globe me-1"></i> View Live Site
+            <div class="d-flex align-items-center gap-2 gap-md-3">
+                <a href="{{ url('/') }}" target="_blank" class="btn btn-outline-success btn-sm rounded-pill px-2 px-md-3 fs-8 fs-md-7">
+                    <i class="bi bi-globe me-1"></i> <span class="d-none d-sm-inline">View Live Site</span><span class="d-sm-none">Live Site</span>
                 </a>
                 <div class="vr mx-1"></div>
                 <div class="d-flex align-items-center gap-2">
                     <div class="bg-success-subtle text-success fw-bold rounded-circle d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
                         {{ substr(Auth::guard('admin')->user()->name ?? 'A', 0, 1) }}
                     </div>
-                    <div>
+                    <div class="d-none d-md-block">
                         <div class="fw-bold fs-7 lh-1">{{ Auth::guard('admin')->user()->name ?? 'Administrator' }}</div>
                         <small class="text-muted fs-8">Super Admin</small>
                     </div>
@@ -266,6 +325,58 @@
 
     <!-- Bootstrap 5 Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            let backdrop = document.querySelector('.sidebar-backdrop');
+
+            if (!backdrop) {
+                backdrop = document.createElement('div');
+                backdrop.className = 'sidebar-backdrop';
+                document.body.appendChild(backdrop);
+            }
+
+            function openSidebar() {
+                sidebar.classList.add('show');
+                backdrop.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeSidebar() {
+                sidebar.classList.remove('show');
+                backdrop.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function () {
+                    if (sidebar.classList.contains('show')) {
+                        closeSidebar();
+                    } else {
+                        openSidebar();
+                    }
+                });
+            }
+
+            backdrop.addEventListener('click', closeSidebar);
+
+            const navLinks = sidebar.querySelectorAll('.nav-link-admin');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function () {
+                    if (window.innerWidth < 992) {
+                        closeSidebar();
+                    }
+                });
+            });
+
+            window.addEventListener('resize', function () {
+                if (window.innerWidth >= 992) {
+                    closeSidebar();
+                }
+            });
+        });
+    </script>
     @stack('scripts')
 </body>
 </html>

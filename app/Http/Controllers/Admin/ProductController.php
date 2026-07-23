@@ -53,10 +53,16 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request): RedirectResponse
     {
         $data = $request->validated();
-        $data['slug'] = Str::slug($data['name']);
+        if (empty($data['slug'])) {
+            $sourceName = !empty($data['brand_name']) ? $data['brand_name'] : trim(preg_replace('/\s*\(.*?\)/', '', $data['name']));
+            $baseSlug = Str::slug($sourceName);
+        } else {
+            $baseSlug = Str::slug($data['slug']);
+        }
+        $data['slug'] = $baseSlug;
 
         // Ensure unique slug
-        $count = Product::where('slug', 'like', $data['slug'] . '%')->count();
+        $count = Product::where('slug', $baseSlug)->orWhere('slug', 'like', $baseSlug . '-%')->count();
         if ($count > 0) {
             $data['slug'] .= '-' . ($count + 1);
         }
@@ -115,7 +121,10 @@ class ProductController extends Controller
         $data = $request->validated();
 
         if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['name']);
+            $sourceName = !empty($data['brand_name']) ? $data['brand_name'] : trim(preg_replace('/\s*\(.*?\)/', '', $data['name']));
+            $data['slug'] = Str::slug($sourceName);
+        } else {
+            $data['slug'] = Str::slug($data['slug']);
         }
 
         // Handle Featured Image Replacement

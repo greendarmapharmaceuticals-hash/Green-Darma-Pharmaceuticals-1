@@ -4,40 +4,72 @@
 
 @section('content')
 
-<!-- Header Banner -->
-<div class="bg-white border-bottom py-4">
-    <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb fs-8 mb-2">
-                <li class="breadcrumb-item"><a href="{{ url('/') }}" class="text-decoration-none text-muted">Home</a></li>
-                <li class="breadcrumb-item active text-success fw-semibold" aria-current="page">Products</li>
-            </ol>
-        </nav>
-        <h2 class="fw-bold text-dark brand-font mb-1">
-            All Pharmaceutical Products
-        </h2>
-        <p class="text-muted mb-0">
-            Browse verified clinical pharmaceutical formulations, medicated soaps, topical preparations, lotions, and healthcare products.
+<!-- E-Catalog Hero Banner -->
+<section class="position-relative text-white py-5 overflow-hidden" style="background: linear-gradient(135deg, #1b4d3e 0%, #2c8562 100%);">
+    <div class="container position-relative z-1 py-3 text-center max-w-4xl mx-auto">
+        <span class="badge bg-white text-success fw-bold px-3 py-2 rounded-pill fs-7 mb-3 shadow-sm">
+            <i class="bi bi-boxes me-1"></i> Official Product Catalog
+        </span>
+        <h1 class="display-5 fw-extrabold text-white brand-font mb-3">
+            Explore Clinical Formulations & Preparations
+        </h1>
+        <p class="lead text-white-50 mb-4 fs-6">
+            Browse DGDA-certified dermatological care, anti-scabies preparations, medicated soaps, lotions, shampoos, and nutritional supplements.
         </p>
-    </div>
-</div>
 
-<!-- Main Body Grid -->
-<div class="py-5">
+        <!-- Live Search Box in Hero -->
+        <form action="{{ route('products.index') }}" method="GET" class="max-w-2xl mx-auto position-relative">
+            <div class="input-group input-group-lg shadow-lg rounded-pill overflow-hidden bg-white p-1">
+                <span class="input-group-text bg-transparent border-0 text-muted ps-3">
+                    <i class="bi bi-search fs-5 text-success"></i>
+                </span>
+                <input type="text" name="search" value="{{ request('search') }}" class="form-control border-0 shadow-none fs-6" placeholder="Search by product name, generic name (e.g. Permethrin, Ketoconazole)...">
+                <button type="submit" class="btn btn-gdp-primary rounded-pill px-4 me-1">Search Catalog</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Category Filter Pills Bar -->
+<section class="bg-white border-bottom py-3 sticky-top shadow-xs" style="z-index: 1020; top: 70px;">
     <div class="container">
-        <!-- Sorting & Count Bar -->
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
-            <div class="text-muted fs-7">
-                Showing <strong class="text-dark">{{ $products->total() }}</strong> published preparations
+        <div class="d-flex align-items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+            <a href="{{ route('products.index') }}" class="btn btn-sm rounded-pill px-3 fw-semibold text-nowrap {{ !request('category') ? 'btn-success text-white' : 'btn-light text-dark' }}">
+                <i class="bi bi-grid-fill me-1"></i> All Products ({{ $products->total() }})
+            </a>
+            @foreach($categories as $cat)
+                <a href="{{ route('products.index', ['category' => $cat->slug]) }}" class="btn btn-sm rounded-pill px-3 fw-semibold text-nowrap {{ request('category') == $cat->slug ? 'btn-success text-white' : 'btn-light text-dark' }}">
+                    {{ $cat->name }} <span class="badge bg-white text-success rounded-pill ms-1 fs-8">{{ $cat->products_count }}</span>
+                </a>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+<!-- Main Body Catalog Grid -->
+<section class="py-5" style="background-color: #f8fafc;">
+    <div class="container">
+        <!-- Sorting & Active Filter Bar -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3 bg-white p-3 rounded-4 shadow-sm border">
+            <div class="text-muted fs-7 d-flex align-items-center gap-2">
+                <span>Showing <strong class="text-dark">{{ $products->total() }}</strong> preparations</span>
                 @if(request('search'))
-                    matching "<strong class="text-dark">{{ request('search') }}</strong>"
+                    <span class="badge bg-secondary-subtle text-secondary px-2 py-1 rounded-pill">
+                        Search: "{{ request('search') }}" <a href="{{ route('products.index') }}" class="text-secondary ms-1"><i class="bi bi-x-circle-fill"></i></a>
+                    </span>
+                @endif
+                @if($selectedCategory)
+                    <span class="badge bg-success-subtle text-success px-2 py-1 rounded-pill">
+                        Category: {{ $selectedCategory->name }} <a href="{{ route('products.index') }}" class="text-success ms-1"><i class="bi bi-x-circle-fill"></i></a>
+                    </span>
                 @endif
             </div>
 
             <form action="{{ route('products.index') }}" method="GET" class="d-flex align-items-center gap-2">
                 @if(request('search'))<input type="hidden" name="search" value="{{ request('search') }}">@endif
-                <small class="text-muted text-nowrap fs-7">Sort By:</small>
-                <select name="sort" onchange="this.form.submit()" class="form-select form-select-sm border-secondary-subtle fs-7" style="width: 150px;">
+                @if(request('category'))<input type="hidden" name="category" value="{{ request('category') }}">@endif
+                <small class="text-muted text-nowrap fs-7 fw-medium"><i class="bi bi-sort-down me-1"></i> Sort By:</small>
+                <select name="sort" onchange="this.form.submit()" class="form-select form-select-sm border-secondary-subtle fs-7 rounded-3" style="width: 160px;">
                     <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest Added</option>
                     <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Name (A to Z)</option>
                     <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Name (Z to A)</option>
@@ -54,13 +86,13 @@
                 </div>
             @empty
                 <div class="col-12 text-center py-5">
-                    <div class="card card-custom p-5 bg-white">
-                        <i class="bi bi-search fs-1 text-muted d-block mb-3"></i>
+                    <div class="card border-0 shadow-sm rounded-4 p-5 bg-white max-w-lg mx-auto">
+                        <i class="bi bi-search display-3 text-muted d-block mb-3"></i>
                         <h4 class="fw-bold text-dark mb-2">No Products Found</h4>
-                        <p class="text-muted mb-4">We couldn't find any pharmaceutical products matching your search query.</p>
+                        <p class="text-muted fs-7 mb-4">We couldn't find any pharmaceutical products matching your search criteria.</p>
                         <div>
-                            <a href="{{ route('products.index') }}" class="btn btn-gdp-primary">
-                                View All Products
+                            <a href="{{ route('products.index') }}" class="btn btn-gdp-primary rounded-pill px-4">
+                                View Full Catalog
                             </a>
                         </div>
                     </div>
@@ -73,6 +105,7 @@
             {{ $products->links() }}
         </div>
     </div>
-</div>
+</section>
 
 @endsection
+

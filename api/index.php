@@ -20,6 +20,7 @@ foreach ($dirs as $dir) {
 // Redirect all Laravel writable paths to /tmp/storage
 putenv("LARAVEL_STORAGE_PATH={$storagePath}");
 $_ENV['LARAVEL_STORAGE_PATH'] = $storagePath;
+$_SERVER['LARAVEL_STORAGE_PATH'] = $storagePath;
 
 putenv("VIEW_COMPILED_PATH={$storagePath}/framework/views");
 $_ENV['VIEW_COMPILED_PATH'] = "{$storagePath}/framework/views";
@@ -46,5 +47,12 @@ if (file_exists($sqliteTmp)) {
     $_ENV['DB_DATABASE'] = $sqliteSource;
 }
 
-// Forward Vercel request to Laravel entrypoint
-require __DIR__ . '/../public/index.php';
+try {
+    require __DIR__ . '/../public/index.php';
+} catch (\Throwable $e) {
+    http_response_code(500);
+    echo "<h1>Vercel Deployment Error</h1>";
+    echo "<p><strong>Message:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
+    echo "<p><strong>File:</strong> " . htmlspecialchars($e->getFile()) . ":" . $e->getLine() . "</p>";
+    echo "<pre>" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
+}

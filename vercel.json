@@ -19,7 +19,7 @@
     ],
     "env": {
         "APP_ENV": "production",
-        "APP_DEBUG": "false",
+        "APP_DEBUG": "true",
         "APP_KEY": "base64:+7lO0PmoC4yFAg54s2EHthK64U9fiIxKU93TdhBPlnA=",
         "DB_CONNECTION": "sqlite",
         "LOG_CHANNEL": "stderr",

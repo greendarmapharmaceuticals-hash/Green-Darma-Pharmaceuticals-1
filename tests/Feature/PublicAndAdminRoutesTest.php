@@ -48,7 +48,7 @@ class PublicAndAdminRoutesTest extends TestCase
     {
         $response = $this->getJson('/products/search-api?q=Scabicod');
         $response->assertStatus(200);
-        $response->assertJsonFragment(['name' => 'Scabicod Soap (Permethrin 1%)']);
+        $response->assertJsonFragment(['name' => 'SCABICOD SOAP']);
     }
 
     public function test_sitemap_xml_returns_valid_xml(): void

@@ -50,7 +50,7 @@ Route::get('/terms', [LegalController::class, 'terms'])->name('terms');
 Route::prefix('admin')->name('admin.')->group(function () {
     // Auth Guest Routes
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1')->name('login.submit');
 
     // Authenticated Admin Routes
     Route::middleware(AdminAuthenticate::class)->group(function () {

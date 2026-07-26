@@ -30,22 +30,6 @@
     </div>
 </section>
 
-<!-- Category Filter Pills Bar -->
-<section class="bg-white border-bottom py-3 sticky-top shadow-xs" style="z-index: 1020; top: 70px;">
-    <div class="container">
-        <div class="d-flex align-items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
-            <a href="{{ route('products.index') }}" class="btn btn-sm rounded-pill px-3 fw-semibold text-nowrap {{ !request('category') ? 'btn-success text-white' : 'btn-light text-dark' }}">
-                <i class="bi bi-grid-fill me-1"></i> All Products ({{ $products->total() }})
-            </a>
-            @foreach($categories as $cat)
-                <a href="{{ route('products.index', ['category' => $cat->slug]) }}" class="btn btn-sm rounded-pill px-3 fw-semibold text-nowrap {{ request('category') == $cat->slug ? 'btn-success text-white' : 'btn-light text-dark' }}">
-                    {{ $cat->name }} <span class="badge bg-white text-success rounded-pill ms-1 fs-8">{{ $cat->products_count }}</span>
-                </a>
-            @endforeach
-        </div>
-    </div>
-</section>
-
 <!-- Main Body Catalog Grid -->
 <section class="py-5" style="background-color: #f8fafc;">
     <div class="container">
@@ -58,16 +42,10 @@
                         Search: "{{ request('search') }}" <a href="{{ route('products.index') }}" class="text-secondary ms-1"><i class="bi bi-x-circle-fill"></i></a>
                     </span>
                 @endif
-                @if($selectedCategory)
-                    <span class="badge bg-success-subtle text-success px-2 py-1 rounded-pill">
-                        Category: {{ $selectedCategory->name }} <a href="{{ route('products.index') }}" class="text-success ms-1"><i class="bi bi-x-circle-fill"></i></a>
-                    </span>
-                @endif
             </div>
 
             <form action="{{ route('products.index') }}" method="GET" class="d-flex align-items-center gap-2">
                 @if(request('search'))<input type="hidden" name="search" value="{{ request('search') }}">@endif
-                @if(request('category'))<input type="hidden" name="category" value="{{ request('category') }}">@endif
                 <small class="text-muted text-nowrap fs-7 fw-medium"><i class="bi bi-sort-down me-1"></i> Sort By:</small>
                 <select name="sort" onchange="this.form.submit()" class="form-select form-select-sm border-secondary-subtle fs-7 rounded-3" style="width: 160px;">
                     <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest Added</option>

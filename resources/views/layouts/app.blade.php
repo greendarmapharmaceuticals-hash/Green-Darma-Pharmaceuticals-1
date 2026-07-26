@@ -4,12 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    @php
-        $companySetting = \App\Models\CompanySetting::first();
-        $pageSlug = request()->is('/') ? 'home' : (request()->is('about') ? 'about' : (request()->is('products*') ? 'products' : (request()->is('contact') ? 'contact' : '')));
-        $seoSetting = \App\Models\SeoSetting::where('page', $pageSlug)->first();
-    @endphp
-
     <title>@yield('title', $seoSetting?->meta_title ?? 'Green Darma Pharmaceuticals | Leading Healthcare Solutions')</title>
     <meta name="description" content="@yield('meta_description', $seoSetting?->meta_description ?? 'Green Darma Pharmaceuticals - High quality pharmaceutical products and clinical healthcare solutions in Bangladesh.')">
     <meta name="keywords" content="@yield('meta_keywords', $seoSetting?->keywords ?? 'Green Darma, Pharmaceuticals Bangladesh, Medicated Soap, Permethrin, Luliconazole, Probiotic')">
@@ -27,13 +21,17 @@
     <meta property="og:url" content="{{ request()->url() }}">
     <meta property="og:image" content="@yield('og_image', asset($seoSetting?->og_image ?? 'favicon.ico'))">
 
-    <!-- Organization JSON-LD Schema -->
+    <!-- Organization & SearchAction JSON-LD Schema -->
     @php
         $seoService = new \App\Services\SeoService();
         $orgSchema = $seoService->generateOrganizationSchema();
+        $searchSchema = $seoService->generateWebsiteSearchSchema();
     @endphp
     <script type="application/ld+json">
         {!! json_encode($orgSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+    </script>
+    <script type="application/ld+json">
+        {!! json_encode($searchSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
     </script>
     @stack('schema')
 
@@ -209,16 +207,10 @@
 
     <!-- Header & Topbar -->
     <header class="sticky-top">
-        <!-- Top Emergency/Contact Info Bar -->
+        <!-- Top Bar -->
         <div class="bg-success text-white py-1 fs-8" style="background-color: var(--gdp-primary) !important;">
-            <div class="container d-flex justify-content-between align-items-center">
-                <div>
-                    <i class="bi bi-shield-check me-1"></i> Official Digital Registry | Green Darma Pharmaceuticals
-                </div>
-                <div class="d-flex gap-3">
-                    <span><i class="bi bi-telephone-fill me-1"></i> {{ $companySetting->phone ?? '+880 1700-000000' }}</span>
-                    <span class="d-none d-md-inline"><i class="bi bi-envelope-fill me-1"></i> {{ $companySetting->email ?? 'info@greendarma.com' }}</span>
-                </div>
+            <div class="container text-center">
+                <i class="bi bi-shield-check me-1"></i> Official Digital Registry | Green Darma Pharmaceuticals
             </div>
         </div>
 
@@ -251,7 +243,7 @@
                             <a class="nav-link nav-link-public {{ request()->is('about') ? 'active' : '' }}" href="{{ route('about') }}">About Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-link-public {{ request()->is('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact</a>
+                            <a class="nav-link nav-link-public {{ request()->is('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact Us</a>
                         </li>
                     </ul>
 
@@ -282,11 +274,10 @@
                     <p class="fs-7 text-slate-400 mb-3">
                         {{ $companySetting->about ?? 'Green Darma Pharmaceuticals is dedicated to developing, manufacturing, and marketing clinical-grade pharmaceutical preparations in Bangladesh.' }}
                     </p>
-                    <div class="d-flex gap-3 fs-5">
-                        @if($companySetting?->facebook)<a href="{{ $companySetting->facebook }}" target="_blank"><i class="bi bi-facebook"></i></a>@endif
-                        @if($companySetting?->linkedin)<a href="{{ $companySetting->linkedin }}" target="_blank"><i class="bi bi-linkedin"></i></a>@endif
-                        @if($companySetting?->youtube)<a href="{{ $companySetting->youtube }}" target="_blank"><i class="bi bi-youtube"></i></a>@endif
-                    </div>
+                    <a href="https://www.facebook.com/share/19HW9S44TA/" target="_blank" rel="noopener noreferrer" class="d-inline-flex align-items-center gap-2 mt-3 pt-2 text-decoration-none opacity-90 hover-opacity">
+                        <img src="{{ asset('images/webbuilderstudio-logo.png') }}" alt="WEBbuilder Studio Logo" class="rounded shadow-sm" style="height: 32px; width: auto; object-fit: contain;">
+                        <span class="fs-8 text-slate-400 fw-medium">Made by <strong class="text-white">WEBbuilderstudio BD</strong></span>
+                    </a>
                 </div>
 
                 <!-- Col 2: Quick Links -->
@@ -296,29 +287,28 @@
                         <li class="mb-2"><a href="{{ url('/') }}">Home Page</a></li>
                         <li class="mb-2"><a href="{{ route('products.index') }}">Products Catalog</a></li>
                         <li class="mb-2"><a href="{{ route('about') }}">About Company</a></li>
-                        <li class="mb-2"><a href="{{ route('contact') }}">Contact Us</a></li>
                         <li class="mb-2"><a href="{{ route('privacy') }}">Privacy Policy</a></li>
                         <li class="mb-2"><a href="{{ route('terms') }}">Terms of Use</a></li>
                         <li class="mb-2"><a href="{{ route('admin.login') }}">Admin Login</a></li>
                     </ul>
                 </div>
 
-                <!-- Col 3: Therapeutic Categories -->
+                <!-- Col 3: Product Portfolio -->
                 <div class="col-6 col-md-3">
-                    <div class="footer-heading">Product Lines</div>
+                    <div class="footer-heading">Featured Products</div>
                     <ul class="list-unstyled fs-7 mb-0">
-                        @foreach(\App\Models\Category::where('status', 'active')->take(5)->get() as $cat)
-                            <li class="mb-2"><a href="{{ route('products.index', ['category' => $cat->slug]) }}">{{ $cat->name }}</a></li>
-                        @endforeach
+                        <li class="mb-2"><a href="{{ route('products.show', 'scabicod-soap') }}">Scabicod Soap</a></li>
+                        <li class="mb-2"><a href="{{ route('products.show', 'tinea-soap') }}">Tinea Soap</a></li>
+                        <li class="mb-2"><a href="{{ route('products.show', 'scabvar-lotion') }}">SCABVAR Lotion</a></li>
+                        <li class="mb-2"><a href="{{ route('products.show', 'greenstar-shampoo') }}">Greenstar Shampoo</a></li>
+                        <li class="mb-2"><a href="{{ route('products.show', 'x-corel-g-tablet') }}">X-Corel G Tablet</a></li>
                     </ul>
                 </div>
 
-                <!-- Col 4: Contact Info -->
+                <!-- Col 4: Address Info -->
                 <div class="col-12 col-md-3">
                     <div class="footer-heading">Headquarters</div>
                     <div class="fs-7 mb-2"><i class="bi bi-geo-alt-fill text-success me-2"></i> {{ $companySetting->address ?? 'Corporate Head Office, Dhaka, Bangladesh' }}</div>
-                    <div class="fs-7 mb-2"><i class="bi bi-telephone-fill text-success me-2"></i> {{ $companySetting->phone ?? '+880 1700-000000' }}</div>
-                    <div class="fs-7 mb-2"><i class="bi bi-envelope-fill text-success me-2"></i> {{ $companySetting->email ?? 'info@greendarma.com' }}</div>
                 </div>
             </div>
 

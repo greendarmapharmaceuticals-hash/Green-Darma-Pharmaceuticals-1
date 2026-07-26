@@ -16,11 +16,11 @@
     </div>
 
     <div class="p-3 d-flex flex-column flex-grow-1">
-        <h5 class="fw-bold text-dark fs-6 mb-1 text-truncate" title="{{ $product->name }}">
-            <a href="{{ route('products.show', $product->slug) }}" class="text-dark text-decoration-none">{{ $product->name }}</a>
+        <h5 class="fw-bold text-dark fs-6 mb-1" title="{{ $product->name }}">
+            <a href="{{ route('products.show', $product->slug) }}" class="text-dark text-decoration-none">{!! $product->name_html !!}</a>
         </h5>
 
-        <div class="text-muted fs-7 mb-2 text-truncate">
+        <div class="text-dark fw-bold fs-7 mb-2 text-truncate" style="color: #000 !important;">
             <i class="bi bi-virus me-1 text-success"></i> {{ $product->generic_name }}
         </div>
 

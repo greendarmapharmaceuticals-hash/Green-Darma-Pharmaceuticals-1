@@ -14,16 +14,16 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>{{ route('contact') }}</loc>
+        <lastmod>{{ date('Y-m-d') }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>{{ route('products.index') }}</loc>
         <lastmod>{{ date('Y-m-d') }}</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>{{ route('contact') }}</loc>
-        <lastmod>{{ date('Y-m-d') }}</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
     </url>
     <url>
         <loc>{{ route('privacy') }}</loc>

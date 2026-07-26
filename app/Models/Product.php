@@ -63,6 +63,12 @@ class Product extends Model
         return 'slug';
     }
 
+    public function getNameHtmlAttribute(): string
+    {
+        $cleanName = preg_replace('/\s*\(.*?\)\s*/', '', $this->name);
+        return e(trim($cleanName));
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);

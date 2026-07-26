@@ -15,8 +15,7 @@ class SitemapController extends Controller
 
         return response($content, 200)
             ->header('Content-Type', 'text/xml')
-            ->header('Cache-Control', 'public, max-age=3600, s-maxage=86400')
-            ->header('X-Robots-Tag', 'noindex');
+            ->header('Cache-Control', 'public, max-age=3600, s-maxage=86400');
     }
 
     public function robots(): Response
@@ -24,7 +23,8 @@ class SitemapController extends Controller
         $content = "User-agent: *\n";
         $content .= "Disallow: /admin/\n";
         $content .= "Disallow: /admin*\n";
-        $content .= "Allow: /\n\n";
+        $content .= "Allow: /\n";
+        $content .= "Allow: /llms.txt\n\n";
         $content .= "Sitemap: " . url('/sitemap.xml') . "\n";
 
         return response($content, 200)

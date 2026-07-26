@@ -52,7 +52,7 @@
             <div class="badge bg-success-subtle text-success fw-bold px-3 py-2 mb-2">
                 {{ $product->category->name ?? 'Therapeutic Care' }}
             </div>
-            <h2 class="fw-bold text-dark mb-1">{{ $product->name }}</h2>
+            <h2 class="fw-bold text-dark mb-1">{!! $product->name_html !!}</h2>
             <div class="text-muted fs-5 mb-3"><i class="bi bi-shield-plus me-1 text-success"></i> Generic: <strong>{{ $product->generic_name }}</strong></div>
 
             <div class="d-flex flex-wrap gap-2 mb-3">

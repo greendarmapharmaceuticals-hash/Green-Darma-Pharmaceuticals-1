@@ -76,7 +76,7 @@
                                 @endif
                             </td>
                             <td>
-                                <div class="fw-bold text-dark fs-6">{{ $product->name }}</div>
+                                <div class="fw-bold text-dark fs-6">{!! $product->name_html !!}</div>
                                 <small class="text-muted"><i class="bi bi-virus me-1"></i> {{ $product->generic_name }}</small>
                             </td>
                             <td>

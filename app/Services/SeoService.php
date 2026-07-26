@@ -16,11 +16,16 @@ class SeoService
         
         $schema = [
             '@context' => 'https://schema.org/',
-            '@type' => 'Product',
+            '@type' => ['Product', 'Drug'],
             'name' => $product->name,
             'image' => ($product->featured_image && file_exists(public_path($product->featured_image))) ? [asset($product->featured_image)] : [asset('favicon.ico')],
             'description' => $product->meta_description ?: $product->short_description,
             'sku' => 'GDP-' . $product->id,
+            'nonProprietaryName' => $product->generic_name,
+            'activeIngredient' => $product->active_ingredients ?: $product->generic_name,
+            'dosageForm' => $product->dosage_form ?: 'Pharmaceutical Formulation',
+            'clinicalPharmacology' => $product->pharmacology,
+            'warning' => $product->precautions ?: $product->warnings,
             'brand' => [
                 '@type' => 'Brand',
                 'name' => $product->brand_name ?: 'Green Darma',
@@ -30,7 +35,6 @@ class SeoService
                 'name' => $product->manufacturer ?: 'Green Darma Pharmaceuticals',
             ],
             'category' => $product->category->name ?? 'Pharmaceuticals',
-            'activeIngredient' => $product->active_ingredients,
         ];
 
         if ($product->price && $product->price > 0) {
@@ -99,6 +103,23 @@ class SeoService
                 $company?->linkedin,
                 $company?->youtube,
             ]),
+        ];
+    }
+
+    /**
+     * Generate JSON-LD Schema for WebSite SearchAction.
+     */
+    public function generateWebsiteSearchSchema(): array
+    {
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'WebSite',
+            'url' => url('/'),
+            'potentialAction' => [
+                '@type' => 'SearchAction',
+                'target' => url('/products?search={search_term_string}'),
+                'query-input' => 'required name=search_term_string',
+            ],
         ];
     }
 

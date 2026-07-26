@@ -37,7 +37,7 @@
         color: #ffffff;
         border: none;
         box-shadow: 0 4px 14px rgba(0, 168, 132, 0.28);
-        transition: all 0.25 ease;
+        transition: all 0.25s ease;
     }
     .btn-teal:hover {
         background: linear-gradient(135deg, #008f70 0%, #007a5e 100%);
@@ -162,17 +162,17 @@
                         </div>
                     </div>
 
-                    <h1 class="fw-bold text-dark brand-font mb-2" style="font-size: 2rem; letter-spacing: -0.5px;">
-                        <i class="bi bi-prescription2 text-success me-2 fs-3"></i> {{ $product->name }}
+                    <h1 class="fw-extrabold text-dark brand-font mb-3" style="font-size: 2.5rem; letter-spacing: -0.5px;">
+                        <i class="bi bi-prescription2 text-success me-2 fs-1"></i> {!! $product->name_html !!}
                     </h1>
 
-                    <div class="fs-5 text-secondary mb-3">
-                        <span class="text-muted">Generic Name:</span>
-                        <a href="{{ route('products.index', ['search' => $product->generic_name]) }}" class="text-decoration-none text-success fw-bold ms-1">
+                    <div class="fs-5 mb-3">
+                        <span class="text-muted fw-medium">Generic Name:</span>
+                        <a href="{{ route('products.index', ['search' => $product->generic_name]) }}" class="text-decoration-none text-dark fw-extrabold ms-1" style="color: #000 !important; font-weight: 800;">
                             {{ $product->generic_name }}
                         </a>
                         @if($product->strength)
-                            <span class="text-dark fw-semibold ms-1">({{ $product->strength }})</span>
+                            <span class="text-dark fw-bold ms-1">({{ $product->strength }})</span>
                         @endif
                     </div>
 
@@ -254,18 +254,6 @@
                     </div>
                 @endif
 
-                <!-- 3. MECHANISM OF ACTION -->
-                @if($product->mechanism_of_action)
-                    <div class="medex-section">
-                        <div class="medex-header-bar">
-                            <span class="lang-en"><i class="bi bi-cpu me-2"></i> Mechanism of Action</span>
-                            <span class="lang-bn d-none"><i class="bi bi-cpu me-2"></i> কার্যপ্রণালী</span>
-                        </div>
-                        <div class="medex-body-text">
-                            <div>{!! formatMedexText($product->mechanism_of_action) !!}</div>
-                        </div>
-                    </div>
-                @endif
 
                 <!-- 4. DOSAGE & ADMINISTRATION -->
                 @if($product->dosage)
@@ -350,18 +338,6 @@
                     </div>
                 @endif
 
-                <!-- 10. DRUG INTERACTIONS -->
-                @if($product->drug_interactions)
-                    <div class="medex-section">
-                        <div class="medex-header-bar">
-                            <span class="lang-en"><i class="bi bi-arrow-repeat me-2"></i> Drug Interactions</span>
-                            <span class="lang-bn d-none"><i class="bi bi-arrow-repeat me-2"></i> ড্রাগ ইন্টারঅ্যাকশন</span>
-                        </div>
-                        <div class="medex-body-text">
-                            <div>{!! formatMedexText($product->drug_interactions) !!}</div>
-                        </div>
-                    </div>
-                @endif
 
                 <!-- 11. STORAGE CONDITIONS -->
                 @if($product->storage)
@@ -377,18 +353,6 @@
                     </div>
                 @endif
 
-                <!-- 12. OVERDOSE INFORMATION -->
-                @if($product->overdose_information)
-                    <div class="medex-section">
-                        <div class="medex-header-bar">
-                            <span class="lang-en"><i class="bi bi-radioactive me-2"></i> Overdose Information</span>
-                            <span class="lang-bn d-none"><i class="bi bi-radioactive me-2"></i> মাত্রাতিরিক্ত ব্যবহার</span>
-                        </div>
-                        <div class="medex-body-text">
-                            <div>{!! formatMedexText($product->overdose_information) !!}</div>
-                        </div>
-                    </div>
-                @endif
 
                 <!-- 13. THERAPEUTIC CLASS -->
                 <div class="medex-section">

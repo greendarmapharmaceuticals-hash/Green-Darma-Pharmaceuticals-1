@@ -14,7 +14,7 @@ class AdminSeeder extends Seeder
             ['email' => 'admin@greendarma.com'],
             [
                 'name' => 'System Administrator',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make(env('ADMIN_DEFAULT_PASSWORD', 'GreenDarmaAdmin2026!')),
                 'role' => 'super_admin',
                 'status' => 'active',
             ]

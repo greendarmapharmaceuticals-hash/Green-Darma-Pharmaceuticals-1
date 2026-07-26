@@ -1,0 +1,21 @@
+# Green Darma Pharmaceuticals
+
+> High-quality, clinical-grade pharmaceutical preparations and healthcare solutions in Bangladesh.
+
+## Organization Information
+- Name: Green Darma Pharmaceuticals
+- Country: Bangladesh
+- Official Website: https://greendarma.com (or local development endpoint)
+- Industry: Pharmaceuticals & Healthcare
+
+## Core Product Portfolio
+- **SCABICOD SOAP** (Permethrin 1% w/w): Medicated soap for scabies treatment and mite elimination.
+- **Tinea Soap** (Luliconazole 1%): Broad-spectrum azole antifungal medicated soap bar for ringworm, athlete's foot, and jock itch.
+- **SCABVAR Lotion** (Permethrin 5% + Crotamiton 10%): Scabicide and antipruritic lotion for fast itch relief.
+- **Greenstar Shampoo** (Ketoconazole 2% + Zinc Pyrithione 1% + Aloe Vera 10%): Anti-dandruff medicated shampoo for seborrhoeic dermatitis.
+- **X-Corel G Tablet** (Coral Calcium 600 mg + Vitamin D3 + Magnesium): Bone health supplement for osteoporosis protection and calcium supplementation.
+
+## API & Public Resources
+- Full Catalog: /products
+- Sitemap: /sitemap.xml
+- Robots Directive: /robots.txt

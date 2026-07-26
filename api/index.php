@@ -39,10 +39,11 @@ $_ENV['APP_ROUTES_CACHE'] = "{$storagePath}/bootstrap/cache/routes.php";
 putenv("APP_EVENTS_CACHE={$storagePath}/bootstrap/cache/events.php");
 $_ENV['APP_EVENTS_CACHE'] = "{$storagePath}/bootstrap/cache/events.php";
 
-// Copy sqlite database to /tmp if present for writable database access in Serverless
+// Copy sqlite database to /tmp for serverless execution
 $sqliteSource = __DIR__ . '/../database/database.sqlite';
 $sqliteTmp = sys_get_temp_dir() . '/database.sqlite';
-if (file_exists($sqliteSource) && !file_exists($sqliteTmp)) {
+
+if (file_exists($sqliteSource)) {
     @copy($sqliteSource, $sqliteTmp);
 }
 

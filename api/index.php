@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 // Prepare writable storage directories in /tmp for Vercel Serverless environment
 $storagePath = sys_get_temp_dir() . '/storage';
 $dirs = [
@@ -68,5 +72,12 @@ if (file_exists($sqliteTmp)) {
     $_ENV['DB_DATABASE'] = $sqliteSource;
 }
 
-// Forward Vercel request to Laravel entrypoint
-require __DIR__ . '/../public/index.php';
+try {
+    require __DIR__ . '/../public/index.php';
+} catch (\Throwable $e) {
+    http_response_code(500);
+    echo "<h1>Vercel Deployment Exception</h1>";
+    echo "<p><strong>Message:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
+    echo "<p><strong>File:</strong> " . htmlspecialchars($e->getFile()) . ":" . $e->getLine() . "</p>";
+    echo "<pre>" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
+}

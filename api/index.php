@@ -24,27 +24,14 @@ $_ENV['LARAVEL_STORAGE_PATH'] = $storagePath;
 putenv("VIEW_COMPILED_PATH={$storagePath}/framework/views");
 $_ENV['VIEW_COMPILED_PATH'] = "{$storagePath}/framework/views";
 
-putenv("APP_SERVICES_CACHE={$storagePath}/bootstrap/cache/services.php");
-$_ENV['APP_SERVICES_CACHE'] = "{$storagePath}/bootstrap/cache/services.php";
-
-putenv("APP_PACKAGES_CACHE={$storagePath}/bootstrap/cache/packages.php");
-$_ENV['APP_PACKAGES_CACHE'] = "{$storagePath}/bootstrap/cache/packages.php";
-
-putenv("APP_CONFIG_CACHE={$storagePath}/bootstrap/cache/config.php");
-$_ENV['APP_CONFIG_CACHE'] = "{$storagePath}/bootstrap/cache/config.php";
-
-putenv("APP_ROUTES_CACHE={$storagePath}/bootstrap/cache/routes.php");
-$_ENV['APP_ROUTES_CACHE'] = "{$storagePath}/bootstrap/cache/routes.php";
-
-putenv("APP_EVENTS_CACHE={$storagePath}/bootstrap/cache/events.php");
-$_ENV['APP_EVENTS_CACHE'] = "{$storagePath}/bootstrap/cache/events.php";
-
 // Copy sqlite database to /tmp for serverless execution
 $sqliteSource = __DIR__ . '/../database/database.sqlite';
 $sqliteTmp = sys_get_temp_dir() . '/database.sqlite';
 
 if (file_exists($sqliteSource)) {
-    @copy($sqliteSource, $sqliteTmp);
+    if (!file_exists($sqliteTmp) || filesize($sqliteSource) !== filesize($sqliteTmp)) {
+        @copy($sqliteSource, $sqliteTmp);
+    }
 }
 
 if (file_exists($sqliteTmp)) {
@@ -61,5 +48,3 @@ if (file_exists($sqliteTmp)) {
 
 // Forward Vercel request to Laravel entrypoint
 require __DIR__ . '/../public/index.php';
-
-

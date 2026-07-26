@@ -12,7 +12,12 @@ class SeoService
      */
     public function generateProductSchema(Product $product): array
     {
-        $company = CompanySetting::first();
+        $company = null;
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('company_settings')) {
+                $company = CompanySetting::first();
+            }
+        } catch (\Throwable $e) {}
         
         $schema = [
             '@context' => 'https://schema.org/',
@@ -84,7 +89,12 @@ class SeoService
      */
     public function generateOrganizationSchema(): array
     {
-        $company = CompanySetting::first();
+        $company = null;
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('company_settings')) {
+                $company = CompanySetting::first();
+            }
+        } catch (\Throwable $e) {}
 
         return [
             '@context' => 'https://schema.org',

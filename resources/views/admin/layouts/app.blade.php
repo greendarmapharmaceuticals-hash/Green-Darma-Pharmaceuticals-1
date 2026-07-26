@@ -210,8 +210,7 @@
     <aside class="sidebar">
         <div class="sidebar-brand d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
-                @php $companySetting = \App\Models\CompanySetting::first(); @endphp
-                @if($companySetting?->logo)
+                @if(isset($companySetting) && $companySetting?->logo)
                     <img src="{{ asset($companySetting->logo) }}" alt="Logo" class="me-2" style="max-height: 38px; width: auto; object-fit: contain;">
                 @else
                     <i class="bi bi-capsule-capsule text-success me-2 fs-3"></i>

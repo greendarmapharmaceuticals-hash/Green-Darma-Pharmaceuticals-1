@@ -39,8 +39,7 @@
 
     <div class="card login-card p-4 bg-white">
         <div class="text-center mb-4">
-            @php $companySetting = \App\Models\CompanySetting::first(); @endphp
-            @if($companySetting?->logo)
+            @if(isset($companySetting) && $companySetting?->logo)
                 <img src="{{ asset($companySetting->logo) }}" alt="Logo" class="mb-3" style="max-height: 80px; width: auto; object-fit: contain;">
             @else
                 <div class="bg-success-subtle text-success d-inline-flex p-3 rounded-circle mb-3">

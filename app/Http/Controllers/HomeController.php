@@ -11,7 +11,12 @@ class HomeController extends Controller
 {
     public function index(): View
     {
-        $company = CompanySetting::first();
+        $company = null;
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('company_settings')) {
+                $company = CompanySetting::first();
+            }
+        } catch (\Throwable $e) {}
         
         $featuredProducts = Product::with('category')
             ->where('status', 'published')

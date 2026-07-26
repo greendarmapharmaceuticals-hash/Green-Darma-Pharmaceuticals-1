@@ -18,8 +18,12 @@ $app = Application::configure(basePath: dirname(__DIR__))
         //
     })->create();
 
-if (isset($_ENV['LARAVEL_STORAGE_PATH']) && $_ENV['LARAVEL_STORAGE_PATH']) {
+if (isset($_SERVER['LARAVEL_STORAGE_PATH']) && $_SERVER['LARAVEL_STORAGE_PATH']) {
+    $app->useStoragePath($_SERVER['LARAVEL_STORAGE_PATH']);
+    $app->useBootstrapPath($_SERVER['LARAVEL_STORAGE_PATH'] . '/bootstrap');
+} elseif (isset($_ENV['LARAVEL_STORAGE_PATH']) && $_ENV['LARAVEL_STORAGE_PATH']) {
     $app->useStoragePath($_ENV['LARAVEL_STORAGE_PATH']);
+    $app->useBootstrapPath($_ENV['LARAVEL_STORAGE_PATH'] . '/bootstrap');
 }
 
 return $app;

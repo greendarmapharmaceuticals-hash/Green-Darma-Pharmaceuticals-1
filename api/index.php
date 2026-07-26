@@ -1,14 +1,5 @@
 <?php
 
-if (isset($_GET['test'])) {
-    header('Content-Type: text/plain');
-    echo "PHP is working on Vercel!\n";
-    echo "PDO Drivers: " . implode(', ', PDO::getAvailableDrivers()) . "\n";
-    echo "PHP Version: " . PHP_VERSION . "\n";
-    echo "SQLite file exists: " . (file_exists(__DIR__ . '/../database/database.sqlite') ? 'YES' : 'NO') . "\n";
-    exit;
-}
-
 // Prepare writable storage directories in /tmp for Vercel Serverless environment
 $storagePath = sys_get_temp_dir() . '/storage';
 $dirs = [
@@ -56,12 +47,5 @@ if (file_exists($sqliteTmp)) {
     $_ENV['DB_DATABASE'] = $sqliteSource;
 }
 
-try {
-    require __DIR__ . '/../public/index.php';
-} catch (\Throwable $e) {
-    http_response_code(500);
-    echo "<h1>Vercel Deployment Error</h1>";
-    echo "<p><strong>Message:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
-    echo "<p><strong>File:</strong> " . htmlspecialchars($e->getFile()) . ":" . $e->getLine() . "</p>";
-    echo "<pre>" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
-}
+// Forward Vercel request to Laravel entrypoint
+require __DIR__ . '/../public/index.php';

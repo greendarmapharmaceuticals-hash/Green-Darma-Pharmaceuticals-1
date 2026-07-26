@@ -4,12 +4,12 @@
     "outputDirectory": "public",
     "functions": {
         "api/index.php": {
-            "runtime": "vercel-php@0.7.3"
+            "runtime": "vercel-php@0.6.2"
         }
     },
     "routes": [
         {
-            "src": "/(css|js|images|storage|build|favicon.ico|robots.txt|llms.txt)(.*)",
+            "src": "/(css|js|images|storage|build|favicon.ico|robots.txt)(.*)",
             "dest": "/public/$1$2"
         },
         {

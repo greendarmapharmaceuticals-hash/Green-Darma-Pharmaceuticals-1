@@ -63,46 +63,53 @@ foreach ($possibleSources as $source) {
 $sqliteTmp = sys_get_temp_dir() . '/database.sqlite';
 
 if ($sqliteSource && file_exists($sqliteSource)) {
-    if (!file_exists($sqliteTmp) || filesize($sqliteSource) !== filesize($sqliteTmp)) {
+    if (!file_exists($sqliteTmp) || filesize($sqliteTmp) === 0) {
         @copy($sqliteSource, $sqliteTmp);
         @chmod($sqliteTmp, 0666);
     }
 }
 
-if (file_exists($sqliteTmp)) {
-    // Verify database tables exist; if missing, re-copy source database
-    try {
-        $pdo = new PDO("sqlite:{$sqliteTmp}");
-        $tableCheck = $pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name='company_settings'");
-        if (!$tableCheck || !$tableCheck->fetch()) {
-            foreach ($possibleSources as $source) {
-                if (file_exists($source) && filesize($source) > 0) {
-                    @copy($source, $sqliteTmp);
-                    @chmod($sqliteTmp, 0666);
-                    break;
-                }
-            }
-        }
-    } catch (\Throwable $e) {
-        // Continue fallback
-    }
-
-    putenv("DB_CONNECTION=sqlite");
-    $_ENV['DB_CONNECTION'] = 'sqlite';
-    $_SERVER['DB_CONNECTION'] = 'sqlite';
-    putenv("DB_DATABASE={$sqliteTmp}");
-    $_ENV['DB_DATABASE'] = $sqliteTmp;
-    $_SERVER['DB_DATABASE'] = $sqliteTmp;
-} elseif ($sqliteSource && file_exists($sqliteSource)) {
-    putenv("DB_CONNECTION=sqlite");
-    $_ENV['DB_CONNECTION'] = 'sqlite';
-    $_SERVER['DB_CONNECTION'] = 'sqlite';
-    putenv("DB_DATABASE={$sqliteSource}");
-    $_ENV['DB_DATABASE'] = $sqliteSource;
-    $_SERVER['DB_DATABASE'] = $sqliteSource;
+if (!file_exists($sqliteTmp)) {
+    @touch($sqliteTmp);
+    @chmod($sqliteTmp, 0666);
 }
 
-// Forward Vercel request to Laravel entrypoint
-require __DIR__ . '/../public/index.php';
+putenv("DB_CONNECTION=sqlite");
+$_ENV['DB_CONNECTION'] = 'sqlite';
+$_SERVER['DB_CONNECTION'] = 'sqlite';
+
+putenv("DB_DATABASE={$sqliteTmp}");
+$_ENV['DB_DATABASE'] = $sqliteTmp;
+$_SERVER['DB_DATABASE'] = $sqliteTmp;
+
+// Register Composer Autoloader
+require __DIR__ . '/../vendor/autoload.php';
+
+// Bootstrap Laravel Application
+/** @var \Illuminate\Foundation\Application $app */
+$app = require_once __DIR__ . '/../bootstrap/app.php';
+
+// Auto-repair database: Check if company_settings table exists
+try {
+    if (!\Illuminate\Support\Facades\Schema::hasTable('company_settings')) {
+        $copied = false;
+        if ($sqliteSource && file_exists($sqliteSource)) {
+            @copy($sqliteSource, $sqliteTmp);
+            @chmod($sqliteTmp, 0666);
+            $copied = true;
+        }
+
+        if (!$copied || !\Illuminate\Support\Facades\Schema::hasTable('company_settings')) {
+            \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+            \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        }
+    }
+} catch (\Throwable $e) {
+    error_log('Database setup error: ' . $e->getMessage());
+}
+
+// Forward request to Laravel application
+$app->handleRequest(\Illuminate\Http\Request::capture());
+
 
 

@@ -1,16 +1,16 @@
 {
     "version": 2,
-    "framework": null,
+    "buildCommand": "npm run build",
     "outputDirectory": "public",
     "functions": {
         "api/index.php": {
-            "runtime": "vercel-php@0.6.2"
+            "runtime": "vercel-php@0.6.2",
+            "includeFiles": "database/**"
         }
     },
     "routes": [
         {
-            "src": "/(css|js|images|storage|build|favicon.ico|robots.txt)(.*)",
-            "dest": "/public/$1$2"
+            "handle": "filesystem"
         },
         {
             "src": "/(.*)",
@@ -27,3 +27,5 @@
         "CACHE_STORE": "array"
     }
 }
+
+

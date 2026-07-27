@@ -5,7 +5,7 @@
     "functions": {
         "api/index.php": {
             "runtime": "vercel-php@0.6.2",
-            "includeFiles": ["database/**", "green_darma_db"]
+            "includeFiles": "database/**"
         }
     },
     "routes": [

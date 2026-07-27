@@ -5,7 +5,7 @@
     "functions": {
         "api/index.php": {
             "runtime": "vercel-php@0.6.2",
-            "includeFiles": "database/**"
+            "includeFiles": ["database/**", "green_darma_db"]
         }
     },
     "routes": [
@@ -19,9 +19,10 @@
     ],
     "env": {
         "APP_ENV": "production",
-        "APP_DEBUG": "true",
+        "APP_DEBUG": "false",
         "APP_KEY": "base64:+7lO0PmoC4yFAg54s2EHthK64U9fiIxKU93TdhBPlnA=",
         "DB_CONNECTION": "sqlite",
+        "DB_DATABASE": "/tmp/database.sqlite",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie",
         "CACHE_STORE": "array"

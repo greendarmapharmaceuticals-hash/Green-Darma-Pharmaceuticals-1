@@ -70,6 +70,23 @@ if ($sqliteSource && file_exists($sqliteSource)) {
 }
 
 if (file_exists($sqliteTmp)) {
+    // Verify database tables exist; if missing, re-copy source database
+    try {
+        $pdo = new PDO("sqlite:{$sqliteTmp}");
+        $tableCheck = $pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name='company_settings'");
+        if (!$tableCheck || !$tableCheck->fetch()) {
+            foreach ($possibleSources as $source) {
+                if (file_exists($source) && filesize($source) > 0) {
+                    @copy($source, $sqliteTmp);
+                    @chmod($sqliteTmp, 0666);
+                    break;
+                }
+            }
+        }
+    } catch (\Throwable $e) {
+        // Continue fallback
+    }
+
     putenv("DB_CONNECTION=sqlite");
     $_ENV['DB_CONNECTION'] = 'sqlite';
     $_SERVER['DB_CONNECTION'] = 'sqlite';

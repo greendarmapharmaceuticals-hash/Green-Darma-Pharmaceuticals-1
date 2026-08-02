@@ -223,7 +223,7 @@
                     @else
                         <i class="bi bi-capsule-capsule fs-2 text-success me-2"></i>
                     @endif
-                    <span>Green Darma</span>
+                    <span class="text-nowrap">Green Darma Pharmaceuticals</span>
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPublic">

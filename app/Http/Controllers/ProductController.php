@@ -10,9 +10,23 @@ use Illuminate\View\View;
 
 class ProductController extends Controller
 {
+    private function visibleProductsQuery()
+    {
+        $allowedSlugs = [
+            'scabicod-soap',
+            'tinea-soap',
+            'scabvar-lotion',
+            'greenstar-shampoo',
+            'x-corel-g-tablet',
+        ];
+
+        return Product::where('status', 'published')
+            ->whereIn('slug', $allowedSlugs);
+    }
+
     public function index(Request $request): View
     {
-        $query = Product::where('status', 'published');
+        $query = $this->visibleProductsQuery();
 
         if ($request->filled('search')) {
             $search = trim($request->input('search'));
@@ -64,12 +78,12 @@ class ProductController extends Controller
 
     public function show(string $slug): View
     {
-        $product = Product::with(['images', 'faqs'])
+        $product = $this->visibleProductsQuery()
+            ->with(['images', 'faqs'])
             ->where('slug', $slug)
-            ->where('status', 'published')
             ->firstOrFail();
 
-        $relatedProducts = Product::where('status', 'published')
+        $relatedProducts = $this->visibleProductsQuery()
             ->where('id', '!=', $product->id)
             ->latest()
             ->take(4)
@@ -86,7 +100,7 @@ class ProductController extends Controller
             return response()->json([]);
         }
 
-        $products = Product::where('status', 'published')
+        $products = $this->visibleProductsQuery()
             ->where(function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%")
                     ->orWhere('generic_name', 'like', "%{$query}%")

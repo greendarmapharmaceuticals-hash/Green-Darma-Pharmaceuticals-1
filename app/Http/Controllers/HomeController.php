@@ -21,6 +21,13 @@ class HomeController extends Controller
         $featuredProducts = Product::with('category')
             ->where('status', 'published')
             ->where('is_featured', true)
+            ->whereIn('slug', [
+                'scabicod-soap',
+                'tinea-soap',
+                'scabvar-lotion',
+                'greenstar-shampoo',
+                'x-corel-g-tablet',
+            ])
             ->latest()
             ->take(6)
             ->get();
@@ -28,6 +35,13 @@ class HomeController extends Controller
         if ($featuredProducts->isEmpty()) {
             $featuredProducts = Product::with('category')
                 ->where('status', 'published')
+                ->whereIn('slug', [
+                    'scabicod-soap',
+                    'tinea-soap',
+                    'scabvar-lotion',
+                    'greenstar-shampoo',
+                    'x-corel-g-tablet',
+                ])
                 ->latest()
                 ->take(6)
                 ->get();
@@ -39,6 +53,13 @@ class HomeController extends Controller
 
         $latestProducts = Product::with('category')
             ->where('status', 'published')
+            ->whereIn('slug', [
+                'scabicod-soap',
+                'tinea-soap',
+                'scabvar-lotion',
+                'greenstar-shampoo',
+                'x-corel-g-tablet',
+            ])
             ->latest()
             ->take(8)
             ->get();

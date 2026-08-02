@@ -33,7 +33,27 @@ class PublicAndAdminRoutesTest extends TestCase
     {
         $response = $this->get('/products');
         $response->assertStatus(200);
-        $response->assertSee('Scabicod Soap');
+        $response->assertSee('SCABICOD SOAP');
+    }
+
+    public function test_only_selected_products_are_visible_on_public_pages(): void
+    {
+        Product::create([
+            'category_id' => Category::first()->id,
+            'name' => 'Hidden Product',
+            'slug' => 'hidden-product',
+            'status' => 'published',
+            'short_description' => 'This should not appear publicly.',
+        ]);
+
+        $response = $this->get('/products');
+        $response->assertStatus(200);
+        $response->assertSee('SCABICOD SOAP');
+        $response->assertSee('Tinea Soap');
+        $response->assertSee('SCABVAR Lotion');
+        $response->assertSee('Greenstar Shampoo');
+        $response->assertSee('X-Corel G Tablet');
+        $response->assertDontSee('Hidden Product');
     }
 
     public function test_product_detail_page_loads_successfully(): void

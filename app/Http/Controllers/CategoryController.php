@@ -17,6 +17,13 @@ class CategoryController extends Controller
         $products = Product::with('category')
             ->where('category_id', $category->id)
             ->where('status', 'published')
+            ->whereIn('slug', [
+                'scabicod-soap',
+                'tinea-soap',
+                'scabvar-lotion',
+                'greenstar-shampoo',
+                'x-corel-g-tablet',
+            ])
             ->latest()
             ->paginate(9);
 

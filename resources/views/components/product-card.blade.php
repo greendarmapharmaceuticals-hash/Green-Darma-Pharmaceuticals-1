@@ -35,6 +35,14 @@
 
         <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
             <div>
+                <small class="text-muted fs-8 d-block">MRP</small>
+                @if($product->effective_price)
+                    <span class="fw-bold text-dark fs-7">৳{{ $product->formatted_effective_price ?? number_format($product->effective_price, 0, '.', '') }}</span>
+                @else
+                    <span class="text-muted fs-8">Price Pending Approval</span>
+                @endif
+            </div>
+            <div>
                 <small class="text-muted fs-8 d-block">Pack Presentation</small>
                 <span class="fw-bold text-success fs-7">
                     {{ $product->pack_size ?: ($product->dosage_form ?: 'Prescription SKU') }}

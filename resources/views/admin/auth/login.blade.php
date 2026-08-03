@@ -58,7 +58,7 @@
             <div class="alert alert-danger py-2 fs-7 mb-3">{{ session('error') }}</div>
         @endif
 
-        <form action="{{ route('admin.login.submit') }}" method="POST">
+        <form action="/admin/login" method="POST">
             @csrf
 
             <div class="mb-3">

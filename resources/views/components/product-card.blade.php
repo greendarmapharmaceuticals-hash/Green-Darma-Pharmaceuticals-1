@@ -45,7 +45,15 @@
             <div>
                 <small class="text-muted fs-8 d-block">Pack Presentation</small>
                 <span class="fw-bold text-success fs-7">
-                    {{ $product->pack_size ?: ($product->dosage_form ?: 'Prescription SKU') }}
+                    @if($product->pack_size && $product->dosage_form)
+                        {{ $product->pack_size }} / {{ $product->dosage_form }}
+                    @elseif($product->pack_size)
+                        {{ $product->pack_size }}
+                    @elseif($product->dosage_form)
+                        {{ $product->dosage_form }}
+                    @else
+                        Prescription SKU
+                    @endif
                 </span>
             </div>
             <a href="{{ route('products.show', $product->slug) }}" class="btn btn-sm btn-outline-success rounded-pill fw-semibold" aria-label="View details for {{ $product->name }}">

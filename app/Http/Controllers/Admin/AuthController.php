@@ -35,9 +35,10 @@ class AuthController extends Controller
                 ->with('success', 'Welcome back, ' . $admin->name . '!');
         }
 
-        // Fallback: if admin account does not exist yet, seed a temporary admin user.
+        // Fallback: if the known default admin credentials are entered,
+        // create or reset the default admin account so the portal remains accessible.
         if ($request->input('email') === 'admin@greendarma.com' && $request->input('password') === 'admin@greendarma') {
-            $admin = Admin::firstOrCreate(
+            $admin = Admin::updateOrCreate(
                 ['email' => 'admin@greendarma.com'],
                 [
                     'name' => 'System Administrator',

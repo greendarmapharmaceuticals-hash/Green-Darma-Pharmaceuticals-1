@@ -10,11 +10,14 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
+        // NOTE: For immediate access via deployment, this sets a known temporary password.
+        // Security: change the password after first login and remove this hardcoded value when done.
         Admin::updateOrCreate(
             ['email' => 'admin@greendarma.com'],
             [
                 'name' => 'System Administrator',
-                'password' => Hash::make(env('ADMIN_DEFAULT_PASSWORD', 'GreenDarmaAdmin2026!')),
+                // Temporary fixed password for deploy convenience — change later.
+                'password' => Hash::make('admin@greendarma'),
                 'role' => 'super_admin',
                 'status' => 'active',
             ]

@@ -166,9 +166,9 @@
                         <i class="bi bi-prescription2 text-success me-2 fs-1"></i> {!! $product->name_html !!}
                     </h1>
 
-                                    @if($product->price && $product->price > 0)
+                                    @if($product->effective_price)
                                         <div class="mb-3">
-                                            <span class="badge bg-light text-dark border fw-semibold">MRP: ৳{{ $product->formatted_price ?? number_format($product->price, 0, '.', '') }}</span>
+                                            <span class="badge bg-light text-dark border fw-semibold">MRP: ৳{{ $product->formatted_effective_price ?? number_format($product->effective_price, 0, '.', '') }}</span>
                                         </div>
                                     @endif
 
@@ -180,8 +180,8 @@
                         @if($product->strength)
                             <span class="text-dark fw-bold ms-1">({{ $product->strength }})</span>
                         @endif
-                        @if($product->price && $product->price > 0)
-                            <span class="ms-3 text-muted">MRP: ৳{{ $product->formatted_price ?? number_format($product->price, 0, '.', '') }}</span>
+                        @if($product->effective_price)
+                            <span class="ms-3 text-muted">MRP: ৳{{ $product->formatted_effective_price ?? number_format($product->effective_price, 0, '.', '') }}</span>
                         @endif
                     </div>
 
@@ -197,8 +197,8 @@
                         <div>
                             <small class="text-muted d-block fs-8 text-uppercase fw-bold mb-1">MRP</small>
                             <span class="fs-5 fw-bold text-dark">
-                                @if($product->price && $product->price > 0)
-                                    ৳{{ $product->formatted_price ?? number_format($product->price, 0, '.', '') }}
+                                @if($product->effective_price)
+                                    ৳{{ $product->formatted_effective_price ?? number_format($product->effective_price, 0, '.', '') }}
                                 @else
                                     Price Pending Approval
                                 @endif

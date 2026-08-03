@@ -42,14 +42,14 @@ class SeoService
             'category' => $product->category->name ?? 'Pharmaceuticals',
         ];
 
-        if ($product->price && $product->price > 0) {
+        $effectivePrice = $product->effective_price ?? null;
+        if ($effectivePrice !== null && $effectivePrice > 0) {
             $schema['offers'] = [
                 '@type' => 'Offer',
-                'url' => route('products.show', $product->slug),
+                'price' => rtrim(rtrim(number_format((float)$effectivePrice, 2, '.', ''), '0'), '.'),
                 'priceCurrency' => 'BDT',
-                'price' => number_format((float)$product->price, 2, '.', ''),
                 'availability' => 'https://schema.org/InStock',
-                'itemCondition' => 'https://schema.org/NewCondition',
+                'url' => route('products.show', $product->slug),
             ];
         }
 

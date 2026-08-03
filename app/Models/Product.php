@@ -161,4 +161,25 @@ class Product extends Model
         if ($this->price === null) return null;
         return number_format((float) $this->price, 0, '.', '');
     }
+
+    public function getEffectivePriceAttribute(): ?float
+    {
+        if ($this->price !== null && $this->price > 0) {
+            return (float) $this->price;
+        }
+
+        $overrides = config('price_overrides', []);
+        if (isset($overrides[$this->slug]) && is_numeric($overrides[$this->slug])) {
+            return (float) $overrides[$this->slug];
+        }
+
+        return null;
+    }
+
+    public function getFormattedEffectivePriceAttribute(): ?string
+    {
+        $p = $this->effective_price;
+        if ($p === null) return null;
+        return number_format((float) $p, 0, '.', '');
+    }
 }

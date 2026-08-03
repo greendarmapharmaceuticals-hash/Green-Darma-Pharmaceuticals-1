@@ -51,7 +51,7 @@
                     @endif
                 </span>
             </div>
-            <a href="{{ route('products.show', $product->slug) }}" class="btn btn-sm btn-outline-success rounded-pill fw-semibold" aria-label="View details for {{ $product->name }}">
+            <a href="{{ route('products.show', $product->slug) }}" class="btn btn-sm btn-outline-success" aria-label="View details for {{ $product->name }}">
                 Details <i class="bi bi-arrow-right" aria-hidden="true"></i>
             </a>
         </div>

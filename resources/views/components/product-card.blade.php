@@ -28,9 +28,6 @@
             @if($product->strength)
                 <span class="badge bg-light text-dark border fs-8">{{ $product->strength }}</span>
             @endif
-            @if($product->dosage_form)
-                <span class="badge bg-light text-dark border fs-8">{{ $product->dosage_form }}</span>
-            @endif
         </div>
 
         <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">

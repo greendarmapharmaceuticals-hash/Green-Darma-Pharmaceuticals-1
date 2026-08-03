@@ -45,9 +45,7 @@
             <div>
                 <small class="text-muted fs-8 d-block">Pack Presentation</small>
                 <span class="fw-bold text-success fs-7">
-                    @if($product->pack_size && $product->dosage_form)
-                        {{ $product->pack_size }} / {{ $product->dosage_form }}
-                    @elseif($product->pack_size)
+                    @if($product->pack_size)
                         {{ $product->pack_size }}
                     @elseif($product->dosage_form)
                         {{ $product->dosage_form }}

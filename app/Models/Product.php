@@ -155,4 +155,10 @@ class Product extends Model
         ];
         return str_ireplace(array_keys($replacements), array_values($replacements), $text);
     }
+
+    public function getFormattedPriceAttribute(): ?string
+    {
+        if ($this->price === null) return null;
+        return number_format((float) $this->price, 0, '.', '');
+    }
 }

@@ -166,6 +166,12 @@
                         <i class="bi bi-prescription2 text-success me-2 fs-1"></i> {!! $product->name_html !!}
                     </h1>
 
+                                    @if($product->price && $product->price > 0)
+                                        <div class="mb-3">
+                                            <span class="badge bg-light text-dark border fw-semibold">MRP: ৳{{ $product->formatted_price ?? number_format($product->price, 0, '.', '') }}</span>
+                                        </div>
+                                    @endif
+
                     <div class="fs-5 mb-3">
                         <span class="text-muted fw-medium">Generic Name:</span>
                         <a href="{{ route('products.index', ['search' => $product->generic_name]) }}" class="text-decoration-none text-dark fw-extrabold ms-1" style="color: #000 !important; font-weight: 800;">
@@ -173,6 +179,9 @@
                         </a>
                         @if($product->strength)
                             <span class="text-dark fw-bold ms-1">({{ $product->strength }})</span>
+                        @endif
+                        @if($product->price && $product->price > 0)
+                            <span class="ms-3 text-muted">MRP: ৳{{ $product->formatted_price ?? number_format($product->price, 0, '.', '') }}</span>
                         @endif
                     </div>
 
@@ -185,6 +194,17 @@
 
                     <!-- Pack Presentation & Information Note -->
                     <div class="d-flex flex-wrap align-items-center gap-4 price-box-medex" style="max-width: 580px;">
+                        <div>
+                            <small class="text-muted d-block fs-8 text-uppercase fw-bold mb-1">MRP</small>
+                            <span class="fs-5 fw-bold text-dark">
+                                @if($product->price && $product->price > 0)
+                                    ৳{{ $product->formatted_price ?? number_format($product->price, 0, '.', '') }}
+                                @else
+                                    Price Pending Approval
+                                @endif
+                            </span>
+                        </div>
+                        <div class="vr"></div>
                         <div>
                             <small class="text-muted d-block fs-8 text-uppercase fw-bold mb-1">Pack Size / Presentation</small>
                             <span class="fs-5 fw-bold text-dark">

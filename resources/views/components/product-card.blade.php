@@ -3,7 +3,7 @@
 <div class="card-product">
     <div class="card-product-img-wrapper">
         @if($product->featured_image && file_exists(public_path($product->featured_image)))
-            <img src="{{ asset($product->featured_image) }}" alt="{{ $product->image_alt ?? $product->name }}" class="card-product-img" style="object-fit: contain; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.1));" loading="lazy">
+            <img src="{{ asset($product->featured_image) }}" alt="{{ $product->image_alt ?: ($product->name . ' - ' . $product->generic_name . ' Green Darma Pharmaceuticals') }}" class="card-product-img" width="180" height="180" style="object-fit: contain; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.1));" loading="lazy" decoding="async">
         @else
             <div class="bg-success-subtle text-success py-4 px-3 rounded-circle text-center fw-bold fs-2">
                 <i class="bi bi-prescription2"></i>
@@ -16,9 +16,9 @@
     </div>
 
     <div class="p-3 d-flex flex-column flex-grow-1">
-        <h5 class="fw-bold text-dark fs-6 mb-1" title="{{ $product->name }}">
+        <h3 class="fw-bold text-dark fs-6 mb-1" title="{{ $product->name }}">
             <a href="{{ route('products.show', $product->slug) }}" class="text-dark text-decoration-none">{!! $product->name_html !!}</a>
-        </h5>
+        </h3>
 
         <div class="text-dark fw-bold fs-7 mb-2 text-truncate" style="color: #000 !important;">
             <i class="bi bi-virus me-1 text-success"></i> {{ $product->generic_name }}

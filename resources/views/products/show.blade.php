@@ -134,7 +134,7 @@
                 <div class="col-12 col-md-4 col-lg-3 text-center">
                     <div class="p-3 border border-light-subtle rounded-4 shadow-sm d-inline-block w-100" style="background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);">
                         @if($product->featured_image && file_exists(public_path($product->featured_image)))
-                            <img src="{{ asset($product->featured_image) }}" alt="{{ $product->image_alt ?: $product->name }}" class="img-fluid" style="max-height: 240px; width: auto; object-fit: contain; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.12));">
+                            <img src="{{ asset($product->featured_image) }}" alt="{{ $product->image_alt ?: ($product->name . ' - ' . $product->generic_name . ' Green Darma Pharmaceuticals') }}" class="img-fluid" width="240" height="240" fetchpriority="high" style="max-height: 240px; width: auto; object-fit: contain; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.12));">
                         @else
                             <div class="py-5 text-muted">
                                 <i class="bi bi-box-seam display-4 d-block mb-2"></i>
@@ -246,10 +246,10 @@
                 <!-- 1. INDICATIONS -->
                 @if($product->indications)
                     <div class="medex-section">
-                        <div class="medex-header-bar">
-                            <span class="lang-en"><i class="bi bi-check2-circle me-2"></i> Indications</span>
+                        <h2 class="medex-header-bar h5 mb-0">
+                            <span class="lang-en"><i class="bi bi-check2-circle me-2"></i> Indications & Therapeutic Uses</span>
                             <span class="lang-bn d-none"><i class="bi bi-check2-circle me-2"></i> নির্দেশনা</span>
-                        </div>
+                        </h2>
                         <div class="medex-body-text">
                             <div class="lang-en">{!! formatMedexText($product->indications) !!}</div>
                             <div class="lang-bn d-none">{!! formatMedexText($product->bn_indications) !!}</div>
@@ -263,10 +263,10 @@
                 <!-- 2. PHARMACOLOGY -->
                 @if($product->pharmacology)
                     <div class="medex-section">
-                        <div class="medex-header-bar">
-                            <span class="lang-en"><i class="bi bi-journal-medical me-2"></i> Pharmacology</span>
+                        <h2 class="medex-header-bar h5 mb-0">
+                            <span class="lang-en"><i class="bi bi-journal-medical me-2"></i> Pharmacology & Mechanism of Action</span>
                             <span class="lang-bn d-none"><i class="bi bi-journal-medical me-2"></i> ফার্মাকোলজি</span>
-                        </div>
+                        </h2>
                         <div class="medex-body-text">
                             <div class="lang-en">{!! formatMedexText($product->pharmacology) !!}</div>
                             <div class="lang-bn d-none">{!! formatMedexText($product->bn_pharmacology) !!}</div>
@@ -278,10 +278,10 @@
                 <!-- 4. DOSAGE & ADMINISTRATION -->
                 @if($product->dosage)
                     <div class="medex-section">
-                        <div class="medex-header-bar">
+                        <h2 class="medex-header-bar h5 mb-0">
                             <span class="lang-en"><i class="bi bi-clock-history me-2"></i> Dosage & Administration</span>
                             <span class="lang-bn d-none"><i class="bi bi-clock-history me-2"></i> মাত্রাও সেবনবিধি</span>
-                        </div>
+                        </h2>
                         <div class="medex-body-text">
                             <div class="lang-en">{!! formatMedexText($product->dosage) !!}</div>
                             <div class="lang-bn d-none">{!! formatMedexText($product->bn_dosage) !!}</div>
@@ -295,10 +295,10 @@
                 <!-- 5. DIRECTIONS FOR USE -->
                 @if($product->directions_for_use)
                     <div class="medex-section">
-                        <div class="medex-header-bar">
+                        <h2 class="medex-header-bar h5 mb-0">
                             <span class="lang-en"><i class="bi bi-hand-index-thumb me-2"></i> Directions for Use</span>
                             <span class="lang-bn d-none"><i class="bi bi-hand-index-thumb me-2"></i> ব্যবহারবিধি</span>
-                        </div>
+                        </h2>
                         <div class="medex-body-text">
                             <div>{!! formatMedexText($product->directions_for_use) !!}</div>
                         </div>
@@ -308,10 +308,10 @@
                 <!-- 6. CONTRAINDICATIONS -->
                 @if($product->contraindications)
                     <div class="medex-section">
-                        <div class="medex-header-bar">
+                        <h2 class="medex-header-bar h5 mb-0">
                             <span class="lang-en"><i class="bi bi-x-circle me-2"></i> Contraindications</span>
                             <span class="lang-bn d-none"><i class="bi bi-x-circle me-2"></i> প্রতিনির্দেশনা</span>
-                        </div>
+                        </h2>
                         <div class="medex-body-text">
                             <div>{!! formatMedexText($product->contraindications) !!}</div>
                         </div>
@@ -321,10 +321,10 @@
                 <!-- 7. SIDE EFFECTS -->
                 @if($product->side_effects)
                     <div class="medex-section">
-                        <div class="medex-header-bar">
-                            <span class="lang-en"><i class="bi bi-exclamation-triangle me-2"></i> Side Effects</span>
+                        <h2 class="medex-header-bar h5 mb-0">
+                            <span class="lang-en"><i class="bi bi-exclamation-triangle me-2"></i> Side Effects & Tolerability</span>
                             <span class="lang-bn d-none"><i class="bi bi-exclamation-triangle me-2"></i> পার্শ্বপ্রতিক্রিয়া</span>
-                        </div>
+                        </h2>
                         <div class="medex-body-text">
                             <div class="lang-en">{!! formatMedexText($product->side_effects) !!}</div>
                             <div class="lang-bn d-none">{!! formatMedexText($product->bn_side_effects) !!}</div>
@@ -335,10 +335,10 @@
                 <!-- 8. PRECAUTIONS & WARNINGS -->
                 @if($product->precautions || $product->warnings)
                     <div class="medex-section">
-                        <div class="medex-header-bar">
-                            <span class="lang-en"><i class="bi bi-shield-exclamation me-2"></i> Precautions & Warnings</span>
+                        <h2 class="medex-header-bar h5 mb-0">
+                            <span class="lang-en"><i class="bi bi-shield-exclamation me-2"></i> Precautions & Safety Warnings</span>
                             <span class="lang-bn d-none"><i class="bi bi-shield-exclamation me-2"></i> সতর্কতা</span>
-                        </div>
+                        </h2>
                         <div class="medex-body-text">
                             <div>{!! formatMedexText($product->precautions ?: $product->warnings) !!}</div>
                         </div>
@@ -348,10 +348,10 @@
                 <!-- 9. PREGNANCY & LACTATION -->
                 @if($product->pregnancy_lactation)
                     <div class="medex-section">
-                        <div class="medex-header-bar">
-                            <span class="lang-en"><i class="bi bi-person-heart me-2"></i> Pregnancy & Lactation</span>
+                        <h2 class="medex-header-bar h5 mb-0">
+                            <span class="lang-en"><i class="bi bi-person-heart me-2"></i> Pregnancy & Lactation Safety</span>
                             <span class="lang-bn d-none"><i class="bi bi-person-heart me-2"></i> গর্ভাবস্থায় ও স্তন্যদানকালে</span>
-                        </div>
+                        </h2>
                         <div class="medex-body-text">
                             <div>{!! formatMedexText($product->pregnancy_lactation) !!}</div>
                         </div>
@@ -362,10 +362,10 @@
                 <!-- 11. STORAGE CONDITIONS -->
                 @if($product->storage)
                     <div class="medex-section">
-                        <div class="medex-header-bar">
-                            <span class="lang-en"><i class="bi bi-box me-2"></i> Storage Conditions</span>
+                        <h2 class="medex-header-bar h5 mb-0">
+                            <span class="lang-en"><i class="bi bi-box me-2"></i> Storage & Stability Conditions</span>
                             <span class="lang-bn d-none"><i class="bi bi-box me-2"></i> সংরক্ষণ পদ্ধতি</span>
-                        </div>
+                        </h2>
                         <div class="medex-body-text">
                             <div class="lang-en">{!! formatMedexText($product->storage) !!}</div>
                             <div class="lang-bn d-none">{!! formatMedexText($product->bn_storage) !!}</div>
@@ -376,10 +376,10 @@
 
                 <!-- 13. THERAPEUTIC CLASS -->
                 <div class="medex-section">
-                    <div class="medex-header-bar">
-                        <span class="lang-en"><i class="bi bi-tags me-2"></i> Therapeutic Class</span>
+                    <h2 class="medex-header-bar h5 mb-0">
+                        <span class="lang-en"><i class="bi bi-tags me-2"></i> Therapeutic Classification</span>
                         <span class="lang-bn d-none"><i class="bi bi-tags me-2"></i> থেরাপিউটিক ক্লাস</span>
-                    </div>
+                    </h2>
                     <div class="medex-body-text">
                         <div class="fw-semibold text-dark fs-6">{{ $product->therapeutic_class ?: 'Clinical Pharmaceutical Formulations' }}</div>
                     </div>
@@ -388,13 +388,13 @@
                 <!-- 14. PATIENT FAQS -->
                 @if($product->faqs->count() > 0)
                     <div class="medex-section mt-4">
-                        <div class="medex-header-bar bg-dark text-white border-0">
-                            <i class="bi bi-question-circle me-2 text-warning"></i> Patient Information & FAQs
-                        </div>
+                        <h2 class="medex-header-bar bg-dark text-white border-0 h5 mb-0">
+                            <i class="bi bi-question-circle me-2 text-warning"></i> Patient Information & FAQs for {{ $product->name }}
+                        </h2>
                         <div class="medex-body-text pt-2">
                             @foreach($product->faqs as $faq)
                                 <div class="mb-3 p-3.5 bg-light rounded-3 border">
-                                    <div class="fw-bold text-dark fs-6 mb-1.5"><i class="bi bi-patch-question-fill text-success me-2 fs-5"></i> {{ $faq->question }}</div>
+                                    <h3 class="fw-bold text-dark fs-6 mb-1.5"><i class="bi bi-patch-question-fill text-success me-2 fs-5"></i> {{ $faq->question }}</h3>
                                     <div class="text-secondary fs-6 ps-4">{!! formatMedexText($faq->answer) !!}</div>
                                 </div>
                             @endforeach
@@ -402,26 +402,62 @@
                     </div>
                 @endif
 
-                <!-- 15. REFERENCES -->
-                @if($product->references_list)
+                <!-- 15. SEARCH REFERENCES & NATURAL ALIAS TAGS -->
+                @if($product->search_aliases)
                     <div class="medex-section mt-4">
-                        <div class="medex-header-bar bg-secondary text-white border-0">
-                            <i class="bi bi-bookmark-check me-2"></i> References & Monograph Sources
+                        <div class="medex-header-bar bg-light text-dark border-start border-4 border-success">
+                            <i class="bi bi-search me-2 text-success"></i> Commonly Searched Terms & Medical Aliases
                         </div>
-                        <div class="medex-body-text fs-6 text-muted pt-2">
-                            {!! formatMedexText($product->references_list) !!}
+                        <div class="medex-body-text fs-7 text-muted pt-2">
+                            <p class="mb-2">Patients and medical professionals search for this pharmaceutical preparation using the following generic, brand, and clinical terms:</p>
+                            <div class="d-flex flex-wrap gap-2 pt-1">
+                                @foreach(explode(',', $product->search_aliases) as $alias)
+                                    <span class="badge bg-secondary-subtle text-secondary border px-2.5 py-1.5 rounded-pill font-monospace fs-8">
+                                        {{ trim($alias) }}
+                                    </span>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 @endif
+
+                <!-- 16. RELATED PRODUCTS INTERNAL CROSS-LINKING -->
+                @if(isset($relatedProducts) && $relatedProducts->count() > 0)
+                    <div class="medex-section mt-4">
+                        <div class="medex-header-bar bg-success text-white border-0">
+                            <i class="bi bi-arrow-left-right me-2"></i> Complementary & Related Clinical Formulations
+                        </div>
+                        <div class="medex-body-text pt-3">
+                            <div class="row g-3">
+                                @foreach($relatedProducts as $relProd)
+                                    <div class="col-12 col-sm-6 col-md-3">
+                                        <div class="card h-100 border rounded-3 p-3 shadow-xs">
+                                            <h4 class="fs-7 fw-bold mb-1">
+                                                <a href="{{ route('products.show', $relProd->slug) }}" class="text-dark text-decoration-none">
+                                                    {{ $relProd->name }}
+                                                </a>
+                                            </h4>
+                                            <p class="fs-8 text-muted mb-2">{{ $relProd->generic_name }}</p>
+                                            <a href="{{ route('products.show', $relProd->slug) }}" class="btn btn-sm btn-outline-success mt-auto fs-8">
+                                                View Monograph <i class="bi bi-arrow-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
             </div>
 
             <!-- BOTTOM PACK SHOTS GALLERY (MedEx Style) -->
             <div class="mt-5 pt-4 border-top text-center">
-                <h6 class="fw-bold text-muted text-uppercase fs-7 mb-3">Pack Images - {{ $product->name }}</h6>
+                <h3 class="fw-bold text-muted text-uppercase fs-7 mb-3">Pack Images - {{ $product->name }}</h3>
                 <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
                     @if($product->featured_image && file_exists(public_path($product->featured_image)))
                         <div class="card p-2.5 border bg-light shadow-sm rounded-3">
-                            <img src="{{ asset($product->featured_image) }}" alt="{{ $product->name }} Pack Shot" class="img-fluid rounded" style="max-height: 180px; width: auto; object-fit: contain;">
+                            <img src="{{ asset($product->featured_image) }}" alt="{{ $product->name }} Official Pack Shot Green Darma" class="img-fluid rounded" width="180" height="180" style="max-height: 180px; width: auto; object-fit: contain;" loading="lazy">
                         </div>
                     @else
                         <div class="card p-4 border bg-light text-success shadow-sm rounded-3">
@@ -432,7 +468,7 @@
 
                     @foreach($product->images as $gImg)
                         <div class="card p-2.5 border bg-light shadow-sm rounded-3">
-                            <img src="{{ asset($gImg->image) }}" alt="Pack Image" class="img-fluid rounded" style="max-height: 180px; width: auto; object-fit: contain;">
+                            <img src="{{ asset($gImg->image) }}" alt="{{ $product->name }} Additional Pack Image" class="img-fluid rounded" width="180" height="180" style="max-height: 180px; width: auto; object-fit: contain;" loading="lazy">
                         </div>
                     @endforeach
                 </div>

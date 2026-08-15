@@ -47,6 +47,7 @@ class Product extends Model
         'seo_title',
         'meta_description',
         'meta_keywords',
+        'search_aliases',
         'image_alt',
         'status',
         'availability_status',

@@ -24,18 +24,56 @@ class ProductController extends Controller
             ->whereIn('slug', $allowedSlugs);
     }
 
+    protected function applySearchQuery($queryBuilder, string $searchQuery)
+    {
+        $term = trim($searchQuery);
+        if (empty($term)) {
+            return $queryBuilder;
+        }
+
+        $cleanTerm = preg_replace('/[^a-zA-Z0-9\s]/', '', $term);
+        $noSpaceTerm = str_replace(' ', '', $cleanTerm);
+        $words = array_filter(explode(' ', $cleanTerm));
+
+        return $queryBuilder->where(function ($q) use ($term, $cleanTerm, $noSpaceTerm, $words) {
+            $q->where('name', 'like', "%{$term}%")
+              ->orWhere('generic_name', 'like', "%{$term}%")
+              ->orWhere('brand_name', 'like', "%{$term}%")
+              ->orWhere('active_ingredients', 'like', "%{$term}%")
+              ->orWhere('search_aliases', 'like', "%{$term}%")
+              ->orWhere('meta_keywords', 'like', "%{$term}%")
+              ->orWhere('indications', 'like', "%{$term}%")
+              ->orWhere('short_description', 'like', "%{$term}%");
+
+            if (!empty($noSpaceTerm)) {
+                $q->orWhere('search_aliases', 'like', "%{$noSpaceTerm}%")
+                  ->orWhere('name', 'like', "%{$noSpaceTerm}%");
+            }
+
+            if (count($words) > 1) {
+                $q->orWhere(function ($subQ) use ($words) {
+                    foreach ($words as $w) {
+                        if (strlen($w) >= 2) {
+                            $subQ->where(function ($wQ) use ($w) {
+                                $wQ->where('name', 'like', "%{$w}%")
+                                   ->orWhere('generic_name', 'like', "%{$w}%")
+                                   ->orWhere('brand_name', 'like', "%{$w}%")
+                                   ->orWhere('search_aliases', 'like', "%{$w}%")
+                                   ->orWhere('active_ingredients', 'like', "%{$w}%");
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     public function index(Request $request): View
     {
         $query = $this->visibleProductsQuery();
 
         if ($request->filled('search')) {
-            $search = trim($request->input('search'));
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('generic_name', 'like', "%{$search}%")
-                    ->orWhere('brand_name', 'like', "%{$search}%")
-                    ->orWhere('active_ingredients', 'like', "%{$search}%");
-            });
+            $this->applySearchQuery($query, $request->input('search'));
         }
 
         if ($request->filled('category')) {
@@ -100,12 +138,10 @@ class ProductController extends Controller
             return response()->json([]);
         }
 
-        $products = $this->visibleProductsQuery()
-            ->where(function ($q) use ($query) {
-                $q->where('name', 'like', "%{$query}%")
-                    ->orWhere('generic_name', 'like', "%{$query}%")
-                    ->orWhere('brand_name', 'like', "%{$query}%");
-            })
+        $productsQuery = $this->visibleProductsQuery();
+        $this->applySearchQuery($productsQuery, $query);
+
+        $products = $productsQuery
             ->take(6)
             ->get(['id', 'name', 'slug', 'generic_name', 'strength', 'featured_image']);
 

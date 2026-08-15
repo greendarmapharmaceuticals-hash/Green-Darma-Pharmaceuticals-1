@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Pharmaceutical Products Catalog | Green Darma')
+@section('title', 'Pharmaceutical Products Catalog | Green Darma Pharmaceuticals')
+@section('meta_description', 'Explore Green Darma Pharmaceuticals official catalog of DGDA certified dermatological medicated soaps, lotions, shampoos, and calcium supplements including Scabicod Soap, Tinea Soap, SCABVAR Lotion, Greenstar Shampoo, and X-Corel G Tablet.')
+@section('meta_keywords', 'Pharmaceutical Products Catalog, Green Darma Products, Scabicod Soap, Tinea Soap, SCABVAR Lotion, Greenstar Shampoo, X-Corel G Tablet, Permethrin soap, Luliconazole soap, Anti scabies lotion')
 
 @section('content')
 
@@ -11,10 +13,10 @@
             <i class="bi bi-boxes me-1"></i> Official Product Catalog
         </span>
         <h1 class="display-5 fw-extrabold text-white brand-font mb-3">
-            Explore Clinical Formulations & Preparations
+            Clinical Formulations & Medicated Preparations
         </h1>
         <p class="lead text-white-50 mb-4 fs-6">
-            Browse DGDA-certified dermatological care, anti-scabies preparations, medicated soaps, lotions, shampoos, and nutritional supplements.
+            Browse DGDA-certified dermatological care, Scabicod Soap (Permethrin 1%), Tinea Soap (Luliconazole 1%), SCABVAR Lotion (Permethrin 5% + Crotamiton 10%), Greenstar Shampoo, and X-Corel G Tablets.
         </p>
 
         <!-- Live Search Box in Hero -->

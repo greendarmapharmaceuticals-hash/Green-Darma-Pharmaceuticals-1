@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>@yield('title', $seoSetting?->meta_title ?? 'Green Darma Pharmaceuticals | Leading Healthcare Solutions')</title>
-    <meta name="description" content="@yield('meta_description', $seoSetting?->meta_description ?? 'Green Darma Pharmaceuticals - High quality pharmaceutical products and clinical healthcare solutions in Bangladesh.')">
-    <meta name="keywords" content="@yield('meta_keywords', $seoSetting?->keywords ?? 'Green Darma, Pharmaceuticals Bangladesh, Medicated Soap, Permethrin, Luliconazole, Probiotic')">
+    <title>@yield('title', $seoSetting?->meta_title ?? 'Green Darma Pharmaceuticals | Leading Healthcare Solutions in Bangladesh')</title>
+    <meta name="description" content="@yield('meta_description', $seoSetting?->meta_description ?? 'Green Darma Pharmaceuticals - High quality pharmaceutical products, medicated soaps, lotions, shampoos, and clinical healthcare solutions in Bangladesh.')">
+    <meta name="keywords" content="@yield('meta_keywords', $seoSetting?->keywords ?? 'Green Darma, Green Darma Pharmaceuticals, Medicated Soap, Scabicod Soap, Tinea Soap, SCABVAR Lotion, Greenstar Shampoo, X-Corel G Tablet, Permethrin, Luliconazole, Bangladesh Pharmaceuticals')">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="theme-color" content="#1b4d3e">
     <link rel="canonical" href="@yield('canonical_url', request()->url())">
 
     <!-- Favicon -->
@@ -14,12 +16,26 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon.png') }}?v=2">
     <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}?v=2">
 
-    <!-- OpenGraph & Social Cards -->
+    <!-- OpenGraph Social Cards -->
+    <meta property="og:site_name" content="Green Darma Pharmaceuticals">
+    <meta property="og:locale" content="en_US">
     <meta property="og:title" content="@yield('title', $seoSetting?->meta_title ?? 'Green Darma Pharmaceuticals')">
-    <meta property="og:description" content="@yield('meta_description', $seoSetting?->meta_description ?? 'Healthcare & Pharmaceutical Platform')">
+    <meta property="og:description" content="@yield('meta_description', $seoSetting?->meta_description ?? 'Clinical Excellence & Healthcare Solutions')">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ request()->url() }}">
+    <meta property="og:url" content="@yield('canonical_url', request()->url())">
     <meta property="og:image" content="@yield('og_image', asset($seoSetting?->og_image ?? 'favicon.ico'))">
+
+    <!-- Twitter Social Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@greendarma">
+    <meta name="twitter:title" content="@yield('title', $seoSetting?->meta_title ?? 'Green Darma Pharmaceuticals')">
+    <meta name="twitter:description" content="@yield('meta_description', $seoSetting?->meta_description ?? 'Clinical Excellence & Healthcare Solutions')">
+    <meta name="twitter:image" content="@yield('og_image', asset($seoSetting?->og_image ?? 'favicon.ico'))">
+
+    <!-- Preconnect CDNs for Core Web Vitals -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
     <!-- Organization & SearchAction JSON-LD Schema -->
     @php

@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Green Darma Pharmaceuticals | Clinical Excellence & Healthcare Innovation')
+@section('meta_description', 'Green Darma Pharmaceuticals is a leading pharmaceutical company in Bangladesh, delivering DGDA certified medicated soaps, lotions, shampoos, and clinical preparations including Scabicod Soap, Tinea Soap, SCABVAR Lotion, Greenstar Shampoo, and X-Corel G Tablet.')
+@section('meta_keywords', 'Green Darma Pharmaceuticals, Scabicod Soap, Tinea Soap, SCABVAR Lotion, Greenstar Shampoo, X-Corel G Tablet, Permethrin soap, Luliconazole soap, anti-scabies lotion, Bangladesh pharmaceuticals')
 
 @section('content')
 

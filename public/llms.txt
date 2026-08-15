@@ -5,7 +5,7 @@
 ## Organization Information
 - Name: Green Darma Pharmaceuticals
 - Country: Bangladesh
-- Official Website: https://greendarma.com (or local development endpoint)
+- Official Website: https://greendarmapharmaceuticals.com
 - Industry: Pharmaceuticals & Healthcare
 
 ## Core Product Portfolio

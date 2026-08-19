@@ -21,22 +21,32 @@ class SeoService
 
         $aliases = array_filter(array_map('trim', explode(',', $product->search_aliases ?? '')));
         $keywords = array_filter(array_map('trim', explode(',', $product->meta_keywords ?? '')));
+        $allAlternateNames = array_values(array_unique(array_filter(array_merge(
+            [$product->generic_name, $product->brand_name, $product->name],
+            $aliases
+        ))));
+
+        $imageUrl = ($product->featured_image && file_exists(public_path($product->featured_image)))
+            ? asset($product->featured_image)
+            : asset('favicon.ico');
 
         $schema = [
             '@context' => 'https://schema.org/',
-            '@type' => ['Product', 'Drug'],
+            '@type' => ['Product', 'Drug', 'MedicalWebPage'],
             'name' => $product->name,
-            'alternateName' => array_values(array_unique(array_merge([$product->generic_name, $product->brand_name], $aliases))),
-            'image' => ($product->featured_image && file_exists(public_path($product->featured_image))) ? [asset($product->featured_image)] : [asset('favicon.ico')],
-            'description' => $product->meta_description ?: $product->short_description,
+            'alternateName' => $allAlternateNames,
+            'image' => [$imageUrl],
+            'description' => strip_tags($product->meta_description ?: $product->short_description),
             'sku' => 'GDP-' . $product->id,
             'gtin8' => '000' . str_pad($product->id, 5, '0', STR_PAD_LEFT),
+            'proprietaryName' => $product->brand_name ?: $product->name,
             'nonProprietaryName' => $product->generic_name,
             'activeIngredient' => $product->active_ingredients ?: $product->generic_name,
             'dosageForm' => $product->dosage_form ?: 'Pharmaceutical Formulation',
-            'clinicalPharmacology' => $product->pharmacology,
-            'medicalCondition' => $product->indications,
-            'warning' => $product->precautions ?: $product->warnings,
+            'clinicalPharmacology' => strip_tags($product->pharmacology),
+            'medicalCondition' => strip_tags($product->indications),
+            'warning' => strip_tags($product->precautions ?: $product->warnings),
+            'prescribingInfo' => route('products.show', $product->slug),
             'brand' => [
                 '@type' => 'Brand',
                 'name' => $product->brand_name ?: 'Green Darma',
@@ -63,6 +73,12 @@ class SeoService
                 'seller' => [
                     '@type' => 'Organization',
                     'name' => 'Green Darma Pharmaceuticals',
+                    'url' => 'https://greendarmapharmaceuticals.com',
+                ],
+                'hasMerchantReturnPolicy' => [
+                    '@type' => 'MerchantReturnPolicy',
+                    'applicableCountry' => 'BD',
+                    'returnPolicyCategory' => 'https://schema.org/MerchantReturnNotPermitted',
                 ],
             ];
         }
@@ -83,10 +99,10 @@ class SeoService
         foreach ($product->faqs as $faq) {
             $questions[] = [
                 '@type' => 'Question',
-                'name' => $faq->question,
+                'name' => trim($faq->question),
                 'acceptedAnswer' => [
                     '@type' => 'Answer',
-                    'text' => strip_tags($faq->answer),
+                    'text' => trim(strip_tags($faq->answer)),
                 ],
             ];
         }

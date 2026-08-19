@@ -38,18 +38,31 @@
         <priority>0.3</priority>
     </url>
     @foreach($products as $product)
+        @php
+            $isFlagship = in_array($product->slug, ['scabicod-soap', 'tinea-soap', 'scabvar-lotion', 'greenstar-shampoo', 'x-corel-g-tablet']);
+            $priority = $isFlagship ? '1.0' : '0.9';
+        @endphp
         <url>
             <loc>{{ route('products.show', $product->slug) }}</loc>
-            <lastmod>{{ $product->updated_at->format('Y-m-d') }}</lastmod>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
+            <lastmod>{{ $product->updated_at ? $product->updated_at->format('Y-m-d') : date('Y-m-d') }}</lastmod>
+            <changefreq>daily</changefreq>
+            <priority>{{ $priority }}</priority>
             @if($product->featured_image && file_exists(public_path($product->featured_image)))
                 <image:image>
                     <image:loc>{{ asset($product->featured_image) }}</image:loc>
-                    <image:title>{{ $product->name }}</image:title>
+                    <image:title>{{ $product->name }} - {{ $product->generic_name }}</image:title>
                     <image:caption>{{ $product->short_description ?: $product->name }}</image:caption>
                 </image:image>
             @endif
+            @foreach($product->images as $galleryImg)
+                @if($galleryImg->image && file_exists(public_path($galleryImg->image)))
+                    <image:image>
+                        <image:loc>{{ asset($galleryImg->image) }}</image:loc>
+                        <image:title>{{ $product->name }} Additional Pack Shot</image:title>
+                        <image:caption>{{ $product->name }} Green Darma Pharmaceuticals</image:caption>
+                    </image:image>
+                @endif
+            @endforeach
         </url>
     @endforeach
 </urlset>

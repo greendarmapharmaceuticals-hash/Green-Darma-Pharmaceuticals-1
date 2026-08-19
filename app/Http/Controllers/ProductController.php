@@ -31,11 +31,12 @@ class ProductController extends Controller
             return $queryBuilder;
         }
 
-        $cleanTerm = preg_replace('/[^a-zA-Z0-9\s]/', '', $term);
+        $cleanTerm = preg_replace('/[^a-zA-Z0-9\s\x{0980}-\x{09FF}]/u', '', $term);
         $noSpaceTerm = str_replace(' ', '', $cleanTerm);
         $words = array_filter(explode(' ', $cleanTerm));
 
         return $queryBuilder->where(function ($q) use ($term, $cleanTerm, $noSpaceTerm, $words) {
+            // Direct substring matches
             $q->where('name', 'like', "%{$term}%")
               ->orWhere('generic_name', 'like', "%{$term}%")
               ->orWhere('brand_name', 'like', "%{$term}%")
@@ -45,21 +46,32 @@ class ProductController extends Controller
               ->orWhere('indications', 'like', "%{$term}%")
               ->orWhere('short_description', 'like', "%{$term}%");
 
-            if (!empty($noSpaceTerm)) {
-                $q->orWhere('search_aliases', 'like', "%{$noSpaceTerm}%")
-                  ->orWhere('name', 'like', "%{$noSpaceTerm}%");
+            // Cleaned term without special characters
+            if ($cleanTerm !== $term && !empty($cleanTerm)) {
+                $q->orWhere('search_aliases', 'like', "%{$cleanTerm}%")
+                  ->orWhere('name', 'like', "%{$cleanTerm}%")
+                  ->orWhere('meta_keywords', 'like', "%{$cleanTerm}%");
             }
 
+            // Compact term without spaces (e.g. "scabicodsoap" -> "scabicod soap")
+            if (!empty($noSpaceTerm) && strlen($noSpaceTerm) >= 3) {
+                $q->orWhere('search_aliases', 'like', "%{$noSpaceTerm}%")
+                  ->orWhere('name', 'like', "%{$noSpaceTerm}%")
+                  ->orWhere('meta_keywords', 'like', "%{$noSpaceTerm}%");
+            }
+
+            // Word token matching for multi-word queries
             if (count($words) > 1) {
                 $q->orWhere(function ($subQ) use ($words) {
                     foreach ($words as $w) {
-                        if (strlen($w) >= 2) {
+                        if (mb_strlen($w) >= 2) {
                             $subQ->where(function ($wQ) use ($w) {
                                 $wQ->where('name', 'like', "%{$w}%")
                                    ->orWhere('generic_name', 'like', "%{$w}%")
                                    ->orWhere('brand_name', 'like', "%{$w}%")
                                    ->orWhere('search_aliases', 'like', "%{$w}%")
-                                   ->orWhere('active_ingredients', 'like', "%{$w}%");
+                                   ->orWhere('active_ingredients', 'like', "%{$w}%")
+                                   ->orWhere('meta_keywords', 'like', "%{$w}%");
                             });
                         }
                     }

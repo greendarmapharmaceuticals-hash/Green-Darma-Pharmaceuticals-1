@@ -9,7 +9,14 @@
     <meta name="keywords" content="@yield('meta_keywords', $seoSetting?->keywords ?? 'Green Darma, Green Darma Pharmaceuticals, Medicated Soap, Scabicod Soap, Tinea Soap, SCABVAR Lotion, Greenstar Shampoo, X-Corel G Tablet, Permethrin, Luliconazole, Bangladesh Pharmaceuticals')">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="theme-color" content="#1b4d3e">
-    <link rel="canonical" href="@yield('canonical_url', request()->url())">
+
+    @php
+        $defaultCanonical = url()->current();
+    @endphp
+    <link rel="canonical" href="@yield('canonical_url', $defaultCanonical)">
+    <link rel="alternate" hreflang="en-bd" href="@yield('canonical_url', $defaultCanonical)">
+    <link rel="alternate" hreflang="bn-bd" href="@yield('canonical_url', $defaultCanonical)">
+    <link rel="alternate" hreflang="x-default" href="@yield('canonical_url', $defaultCanonical)">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2">
@@ -22,7 +29,7 @@
     <meta property="og:title" content="@yield('title', $seoSetting?->meta_title ?? 'Green Darma Pharmaceuticals')">
     <meta property="og:description" content="@yield('meta_description', $seoSetting?->meta_description ?? 'Clinical Excellence & Healthcare Solutions')">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="@yield('canonical_url', request()->url())">
+    <meta property="og:url" content="@yield('canonical_url', $defaultCanonical)">
     <meta property="og:image" content="@yield('og_image', asset($seoSetting?->og_image ?? 'favicon.ico'))">
 
     <!-- Twitter Social Cards -->
@@ -32,10 +39,12 @@
     <meta name="twitter:description" content="@yield('meta_description', $seoSetting?->meta_description ?? 'Clinical Excellence & Healthcare Solutions')">
     <meta name="twitter:image" content="@yield('og_image', asset($seoSetting?->og_image ?? 'favicon.ico'))">
 
-    <!-- Preconnect CDNs for Core Web Vitals -->
+    <!-- Preconnect & DNS-Prefetch CDNs for Core Web Vitals -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
 
     <!-- Organization & SearchAction JSON-LD Schema -->
     @php

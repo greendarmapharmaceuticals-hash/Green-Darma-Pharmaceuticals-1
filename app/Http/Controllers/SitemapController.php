@@ -28,6 +28,13 @@ class SitemapController extends Controller
         $content .= "Disallow: /admin*\n";
         $content .= "Allow: /\n";
         $content .= "Allow: /llms.txt\n\n";
+        $content .= "User-agent: Googlebot\n";
+        $content .= "Allow: /\n";
+        $content .= "Disallow: /admin/\n\n";
+        $content .= "User-agent: Bingbot\n";
+        $content .= "Allow: /\n";
+        $content .= "Disallow: /admin/\n\n";
+        $content .= "Host: greendarmapharmaceuticals.com\n";
         $content .= "Sitemap: " . $baseUrl . "/sitemap.xml\n";
 
         return response($content, 200)

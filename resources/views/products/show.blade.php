@@ -412,9 +412,12 @@
                             <p class="mb-2">Patients and medical professionals search for this pharmaceutical preparation using the following generic, brand, and clinical terms:</p>
                             <div class="d-flex flex-wrap gap-2 pt-1">
                                 @foreach(explode(',', $product->search_aliases) as $alias)
-                                    <span class="badge bg-secondary-subtle text-secondary border px-2.5 py-1.5 rounded-pill font-monospace fs-8">
-                                        {{ trim($alias) }}
-                                    </span>
+                                    @php $cleanAlias = trim($alias); @endphp
+                                    @if(!empty($cleanAlias))
+                                        <a href="{{ route('products.index', ['search' => $cleanAlias]) }}" class="badge bg-secondary-subtle text-secondary border px-2.5 py-1.5 rounded-pill font-monospace fs-8 text-decoration-none hover-shadow">
+                                            <i class="bi bi-tag-fill me-1 text-success fs-9"></i> {{ $cleanAlias }}
+                                        </a>
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
@@ -432,11 +435,11 @@
                                 @foreach($relatedProducts as $relProd)
                                     <div class="col-12 col-sm-6 col-md-3">
                                         <div class="card h-100 border rounded-3 p-3 shadow-xs">
-                                            <h4 class="fs-7 fw-bold mb-1">
+                                            <h3 class="fs-7 fw-bold mb-1">
                                                 <a href="{{ route('products.show', $relProd->slug) }}" class="text-dark text-decoration-none">
                                                     {{ $relProd->name }}
                                                 </a>
-                                            </h4>
+                                            </h3>
                                             <p class="fs-8 text-muted mb-2">{{ $relProd->generic_name }}</p>
                                             <a href="{{ route('products.show', $relProd->slug) }}" class="btn btn-sm btn-outline-success mt-auto fs-8">
                                                 View Monograph <i class="bi bi-arrow-right"></i>
